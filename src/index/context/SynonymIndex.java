@@ -1,4 +1,8 @@
 
+import index.Index;
+import index.PostingsList;
+import index.context.BlackListContextFilter;
+
 import java.io.RandomAccessFile;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -9,6 +13,8 @@ public class SynonymIndex {
 		
 	HashSet<String> visited = new HashSet<String>(100);
 	HashMap<String, HashMap<String, Double>> symindex = new HashMap<String, HashMap<String, Double>>(100);
+
+    private final ContextFilter contextFilter = new BlackListContextFilter();
 	
 	
 	/*B_THRESH determines when the index [or batch] should be
@@ -41,7 +47,7 @@ public class SynonymIndex {
 			String source = dict.next();
 			visited.add(source);
 			
-			if(ContextFilter.isValid(source)){
+			if(contextFilter.isValid(source)){
 				symindex.put(source,  new HashMap<String, Double>(10));
 				HashMap<String, Double> sympl = symindex.get(source);
 				PostingsList sp = index.getPostings(source);
