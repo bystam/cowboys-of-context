@@ -7,32 +7,38 @@ import java.awt.*;
 public class SearchWindow extends JFrame {
 
     public static void main(String[] args) {
-        new SearchWindow();
+        JFrame searchWindow = new SearchWindow();
+
+        searchWindow.setPreferredSize(new Dimension(800, 600));
+        searchWindow.pack();
+        searchWindow.setVisible(true);
     }
 
     public SearchWindow () {
-        setLayout(new BorderLayout());
-        JTextField queryField = getQueryField ();
-        JComponent resultArea = getResultArea();
-        JTree contextTree = new ContextTree();
-        JPanel searchPanel = new JPanel(new BorderLayout(3, 3));
-        searchPanel.add(queryField, BorderLayout.NORTH);
-        searchPanel.add(resultArea, BorderLayout.CENTER);
-        getContentPane().add(searchPanel, BorderLayout.CENTER);
-        getContentPane().add(contextTree, BorderLayout.EAST);
-
-        setPreferredSize(new Dimension(800, 600));
-        pack();
-        setVisible(true);
+        getContentPane().setLayout(new BorderLayout());
+        addQueryArea();
+        addContextTree();
     }
 
-    private JTextField getQueryField() {
-        return new JTextField();
-    }
-
-    private JComponent getResultArea() {
+    private void addQueryArea() {
+        JTextField queryField = new JTextField();
+        queryField.setBorder(BorderFactory.createTitledBorder("Query"));
         JComponent resultArea = new JScrollPane();
+        resultArea.setBorder(BorderFactory.createTitledBorder("Search result"));
         resultArea.add(new JTextArea());
-        return resultArea;
+
+        JPanel queryArea = new JPanel(new BorderLayout());
+        queryArea.add(queryField, BorderLayout.NORTH);
+        queryArea.add(resultArea, BorderLayout.CENTER);
+        getContentPane().add(queryArea, BorderLayout.CENTER);
+    }
+
+    private void addContextTree() {
+        ContextTree contextTree = new ContextTree();
+        JScrollPane contextArea = new JScrollPane(contextTree);
+        contextArea.setPreferredSize(contextTree.getPreferredSize());
+
+        contextArea.setBorder(BorderFactory.createTitledBorder("Context"));
+        getContentPane().add(contextArea, BorderLayout.EAST);
     }
 }

@@ -1,4 +1,4 @@
-package index;
+package index.context;
 
 import index.context.ContextIndex;
 import index.context.ContextScore;
