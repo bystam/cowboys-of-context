@@ -15,6 +15,18 @@ public class ContextScore implements Comparable<ContextScore> {
         this.score = score;
     }
 
+    public String getFirstWord() {
+        return firstWord;
+    }
+
+    public String getSecondWord() {
+        return secondWord;
+    }
+
+    public double getScore() {
+        return score;
+    }
+
     @Override
     public int compareTo(ContextScore context) {
         return -Double.compare(score, context.score);
