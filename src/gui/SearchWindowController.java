@@ -10,7 +10,7 @@ import search.SearchResults;
 
 import javax.swing.*;
 import java.awt.*;
-import java.util.*;
+import java.util.Arrays;
 import java.util.concurrent.ExecutionException;
 
 public class SearchWindowController {

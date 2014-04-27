@@ -8,7 +8,6 @@ import javax.swing.*;
 import javax.swing.tree.DefaultMutableTreeNode;
 import java.awt.*;
 import java.util.List;
-import java.util.Map;
 
 public class ContextTree extends JTree {
 

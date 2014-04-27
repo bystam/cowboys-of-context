@@ -3,7 +3,9 @@ package index;
 import common.Document;
 
 import java.io.Serializable;
-import java.util.*;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
 
 public class PostingsList implements Serializable, Iterable<PostingsEntry> {
 
