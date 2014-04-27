@@ -24,4 +24,8 @@ public class Context {
     public Set<String> getOriginalWords () {
         return context.keySet();
     }
+    
+    public void clear(){
+    	context.clear();
+    }
 }
