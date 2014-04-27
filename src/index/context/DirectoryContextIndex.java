@@ -1,14 +1,15 @@
 package index.context;
 
-import java.io.File;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.List;
 
 public class DirectoryContextIndex implements ContextIndex {
 
-    private final File indexDirectory;
+    private final Path indexDirectory;
 
-    public DirectoryContextIndex (File indexDirectory) {
-        if (!indexDirectory.isDirectory())
+    public DirectoryContextIndex (Path indexDirectory) {
+        if (!Files.isDirectory(indexDirectory))
             throw new IllegalArgumentException("Input must be an index directory: " + indexDirectory);
         this.indexDirectory = indexDirectory;
     }

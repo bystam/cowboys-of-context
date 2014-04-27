@@ -10,6 +10,7 @@ public class Query implements Iterable<String> {
     private final List<String> terms;
 
     public Query (String queryString) {
+        queryString = queryString.trim();
         terms = Arrays.asList(queryString.split(" \t"));
     }
 

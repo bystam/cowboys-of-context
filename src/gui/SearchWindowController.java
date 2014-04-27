@@ -24,7 +24,7 @@ public class SearchWindowController {
 
     public static void main(String[] args) {
         SearchWindowController searchWindowController =
-                new SearchWindowController(new ContextSearchEngine());
+                new SearchWindowController(new ContextSearchEngine(null, null));
 
         searchWindowController.displayFrame();
         searchWindowController.displayContext(null);
