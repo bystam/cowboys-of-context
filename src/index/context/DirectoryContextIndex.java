@@ -1,11 +1,7 @@
 package index.context;
 
-import index.context.ContextIndex;
-import index.context.ContextScore;
-
 import java.io.File;
 import java.util.List;
-import java.util.Map;
 
 public class DirectoryContextIndex implements ContextIndex {
 
@@ -28,7 +24,7 @@ public class DirectoryContextIndex implements ContextIndex {
     }
 
     @Override
-    public Map<String, List<ContextScore>> getContextForWords(List<String> words) {
+    public Context getContextForWords(List<String> words) {
         return null;
     }
 }

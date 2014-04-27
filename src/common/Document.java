@@ -1,7 +1,5 @@
 package common;
 
-import java.io.File;
-
 public class Document {
 
     private final String name;

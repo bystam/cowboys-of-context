@@ -1,6 +1,7 @@
 package gui;
 
 
+import index.context.Context;
 import index.context.ContextScore;
 
 import javax.swing.*;
@@ -25,11 +26,11 @@ public class ContextTree extends JTree {
         return preferredSize;
     }
 
-    public void displayContextForWords (Map<String, List<ContextScore>> context) {
+    public void displayContextForWords (Context context) {
         ROOT.removeAllChildren();
-        for (String word : context.keySet()) {
+        for (String word : context.getOriginalWords()) {
             DefaultMutableTreeNode wordNode =
-                    nodeWithContext (word, context.get(word));
+                    nodeWithContext (word, context.getContextScoresForWord(word));
             ROOT.add(wordNode);
         }
 
