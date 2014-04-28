@@ -1,7 +1,7 @@
 package common;
 
 import java.io.File;
-
+import java.nio.file.*;
 public class Document {
 
     private final String name;
@@ -11,6 +11,14 @@ public class Document {
         this.name = name;
         this.filePath = filePath;
     }
+
+	public String getTitle() {
+		return name;
+	}
+
+	public String getFilePath() {
+		return filePath;
+	}
 
     @Override
     public boolean equals(Object o) {
@@ -29,4 +37,9 @@ public class Document {
         result = 31 * result + filePath.hashCode();
         return result;
     }
+
+	@Override
+	public String toString() {
+		return String.format("[%s \"%s\"]" , Paths.get(filePath), name);
+	}
 }

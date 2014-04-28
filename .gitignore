@@ -53,3 +53,8 @@ local.properties
 # Maven
 log/
 target/
+
+# Emacs
+*~
+sources.txt
+\#*#
