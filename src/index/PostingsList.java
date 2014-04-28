@@ -16,6 +16,7 @@ public class PostingsList implements Serializable, Iterable<PostingsEntry> {
 	public PostingsList(String word) {
 		this.word = word;
 	}
+	
     @Override
     public Iterator<PostingsEntry> iterator() {
         return postingsLookup.values().iterator();
@@ -36,5 +37,9 @@ public class PostingsList implements Serializable, Iterable<PostingsEntry> {
 
 	public String getWord() {
 		return word;
+	}
+	
+	public int getNumDocuments(){
+		return postingsLookup.size();
 	}
 }
