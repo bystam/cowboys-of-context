@@ -1,5 +1,6 @@
 package index.context;
 
+import java.util.Collection;
 import java.util.List;
 
 /**
@@ -31,5 +32,5 @@ public interface ContextIndex {
      * @param words The words to find context scores for
      * @return A context for all the words
      */
-    Context getContextForWords (List<String> words);
+    Context getContextForWords (Collection<String> words);
 }

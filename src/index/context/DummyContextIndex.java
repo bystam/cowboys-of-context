@@ -1,5 +1,6 @@
 package index.context;
 
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -40,7 +41,7 @@ public class DummyContextIndex implements ContextIndex {
     }
 
     @Override
-    public Context getContextForWords(List<String> words) {
+    public Context getContextForWords(Collection<String> words) {
         Context context = new Context();
         for (String word : words)
             context.putContextScoresForWord(word, getContextsForWord(word));
