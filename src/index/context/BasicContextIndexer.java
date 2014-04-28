@@ -1,10 +1,12 @@
+package index.context;
 
 import index.Index;
+import index.PostingsEntry;
 import index.PostingsList;
-import index.context.BlackListContextFilter;
 
+import java.io.File;
 import java.io.RandomAccessFile;
-import java.util.HashMap;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
@@ -37,7 +39,7 @@ public class BasicContextIndexer implements ContextIndexer {
 	 * This could either be fixed or a search rule can be implemented as ' if(i > j){ get(j, i)}else{ get(i, j)}'
 	 * 
 	 */
-	void buildIndex(Index index, File indexDirectory){
+    public void buildIndex(Index index, File indexDirectory){
 		Iterator<String> dict = index.getDictionary();
 		
 		/*Would like a more efficient iteration of the postingslists.
@@ -49,15 +51,15 @@ public class BasicContextIndexer implements ContextIndexer {
 			visited.add(source);
 			
 			if(contextFilter.isValid(source)){
-				List<ContextScore> sympl = new List<ContextScore>(10);
+				List<ContextScore> sympl = new ArrayList<ContextScore>(10);
 				
-				PostingsList sp = index.getPostings(source);
+				PostingsList sp = index.getPostingsList (source);
 				
 				Iterator<String> targetDict = index.getDictionary();
 				while(targetDict.hasNext()){
 					String target = targetDict.next();
 					if(!visited.contains(target)){
-						PostingsList tp = index.getPostings(target);
+						PostingsList tp = index.getPostingsList(target);
 						sympl.add(new ContextScore(source, target, computeContextScore(sp, tp)));
 					}
 				}
@@ -136,44 +138,32 @@ public class BasicContextIndexer implements ContextIndexer {
 	 * length is the length of the document.
 	 */
 	double distanceFactor(double a, double b, double length){
-		if(length==0){
+		if (length == 0) {
 			return 0;
 		}
 		return Math.exp(-((a-b)*(a-b))/(length*length));
 	}
 
-	
-	
 	/*Writes and appends index/batch to index file.
 	 * The index format is currently unclear...
 	 */
 	void writeIndexToFile(File indexDirectory){
-		try{
-			RandomAccessFile f = new RandomAccessFile(indexDirectory+"contextIndex.txt", "rw");
-			RandomAccessFile i = new RandomAccessFile(indexDirectory+"contextDict.txt", "rw");
+		try (RandomAccessFile f = new RandomAccessFile(indexDirectory+"contextIndex.txt", "rw");
+             RandomAccessFile i = new RandomAccessFile(indexDirectory+"contextDict.txt", "rw");) {
 			f.seek(f.length());
 			i.seek(i.length());
-			Iterator<String> it = symindex.getOriginalWords().iterator();
-			while(it.hasNext()){
-				String s = it.next();
-				
+			for (String word : symindex.getOriginalWords()) {
 				StringBuilder sb = new StringBuilder(100);
 				
-				Iterator<ContextScore> it2 = symindex.getContextScoresForWord(s).iterator();
-				while(it2.hasNext()){
-					ContextScore t = it2.next();
-					sb.append(t.getSecondWord()).append(',').append(t.getScore()).append(':');
+				for (ContextScore contextScore : symindex.getContextScoresForWord(word)) {
+					sb.append(contextScore.getSecondWord()).append(',').append(contextScore.getScore()).append(':');
 				}
-				i.writeBytes(s+' '+f.getFilePointer());
+				i.writeBytes(word+' '+f.getFilePointer());
 				f.writeBytes(sb.toString());
 			}
-			f.close();
-			i.close();
 			symindex.clear();
-		}catch(Exception e){
+		} catch(Exception e) {
 			e.printStackTrace();
 		}
 	}
-	
-
 }

@@ -1,7 +1,7 @@
 package common;
 
-import java.io.File;
-import java.nio.file.*;
+import java.nio.file.Paths;
+
 public class Document {
 
     private final String name;

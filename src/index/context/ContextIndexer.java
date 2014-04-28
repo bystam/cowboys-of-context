@@ -1,5 +1,7 @@
 package index.context;
 
+import index.Index;
+
 import java.io.File;
 
 public interface ContextIndexer {
