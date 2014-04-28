@@ -1,7 +1,9 @@
 package search;
 
 import index.Index;
+import index.context.Context;
 import index.context.ContextIndex;
+import index.context.ContextScore;
 
 /**
  * Search engine expanding query context before performing ranked retrieval.
@@ -25,6 +27,13 @@ public class ContextSearchEngine extends RankedRetrievalSearchEngine {
     }
 
     private Query expandQueryWithContext(Query query) {
-        return query; // TODO use context index to expand the query
+    	Context context = contextIndex.getContextForWords(query.getTerms());
+    	for(String term : context.getOriginalWords()){
+    		for(ContextScore cs : context.getContextScoresForWord(term)){
+    			query.addOrIncrementTermWeight(cs.getSecondWord(), cs.getScore());
+    		}
+    	}
+    	return query;
     }
+
 }
