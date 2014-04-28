@@ -1,18 +1,15 @@
 package index.context;
 
-import index.context.ContextIndex;
-import index.context.ContextScore;
-
-import java.io.File;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.List;
-import java.util.Map;
 
 public class DirectoryContextIndex implements ContextIndex {
 
-    private final File indexDirectory;
+    private final Path indexDirectory;
 
-    public DirectoryContextIndex (File indexDirectory) {
-        if (!indexDirectory.isDirectory())
+    public DirectoryContextIndex (Path indexDirectory) {
+        if (!Files.isDirectory(indexDirectory))
             throw new IllegalArgumentException("Input must be an index directory: " + indexDirectory);
         this.indexDirectory = indexDirectory;
     }
@@ -28,7 +25,7 @@ public class DirectoryContextIndex implements ContextIndex {
     }
 
     @Override
-    public Map<String, List<ContextScore>> getContextForWords(List<String> words) {
+    public Context getContextForWords(List<String> words) {
         return null;
     }
 }
