@@ -18,14 +18,14 @@ public class Util {
     	}
     }
     
-	public static <K,V extends Comparable<V>> Map<K,V> getMapSortedByValues(Map<K,V> sortedMap){
-    	List<Entry<K,V>> entries = new LinkedList<Entry<K,V>>(sortedMap.entrySet());
+	public static <K,V extends Comparable<V>> LinkedHashMap<K,V> getMapSortedByValues(Map<K,V> map){
+    	List<Entry<K,V>> entries = new LinkedList<Entry<K,V>>(map.entrySet());
     	Collections.sort(entries, new Comparator<Entry<K,V>>() {
 			public int compare(Entry<K, V> o1, Entry<K, V> o2) {
 				return o1.getValue().compareTo(o2.getValue());
 			}
 		});
-    	sortedMap = new LinkedHashMap<K,V>();
+    	LinkedHashMap<K,V> sortedMap = new LinkedHashMap<K,V>();
     	for(Entry<K,V> e : entries){
     		sortedMap.put(e.getKey(), e.getValue());
     	}
