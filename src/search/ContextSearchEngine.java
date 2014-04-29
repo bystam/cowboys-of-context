@@ -21,19 +21,19 @@ public class ContextSearchEngine extends RankedRetrievalSearchEngine {
     }
 
     @Override
-    public SearchResults search(Query query) {
-        query = expandQueryWithContext (query);
-        return super.search(query);
+    public SearchResults search(Query query) {        
+        ContextsMap contexts = contextIndex.getContextsForWords(query.getTerms());
+        query = expandQueryWithContext (query, contexts);
+        SearchResults simpleResults = super.search(query);
+        return new SearchResults(simpleResults, contexts);
     }
 
-    private Query expandQueryWithContext(Query query) {
-    	ContextsMap contextsMap = contextIndex.getContextsForWords(query.getTerms());
+    private Query expandQueryWithContext(Query query, ContextsMap contextsMap) {
     	for(String term : contextsMap.getOriginalWords()){
-    		for(WordRelation cs : contextsMap.getContextScoresForWord(term)){
-    			query.addOrIncrementTermWeight(cs.getSecondWord(), cs.getScore());
+    		for(WordRelation relation : contextsMap.getContextScoresForWord(term)){
+    			query.addOrIncrementTermWeight(relation.getSecondWord(), relation.getScore());
     		}
     	}
     	return query;
     }
-
 }
