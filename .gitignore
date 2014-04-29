@@ -58,3 +58,7 @@ target/
 *~
 sources.txt
 \#*#
+
+
+# indexing
+index/
