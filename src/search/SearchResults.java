@@ -6,6 +6,11 @@ import java.util.Map.Entry;
 
 import common.Document;
 
+/**
+ * This is a class representing the results of running a query
+ * through a search engine. Should typically be able to give
+ * the user links to different hits.
+ */
 public class SearchResults implements Iterable<Entry<Document, Double>>{
 	private Map<Document, Double> documents;
 	

@@ -10,7 +10,7 @@ import java.util.Map;
 public class PostingsList implements Serializable, Iterable<PostingsEntry> {
 
     private static final long serialVersionUID = 112389123123L;
-	private final String word;
+    private final String word;
     private final Map<Document, PostingsEntry> postingsLookup = new HashMap<>();
 
 	public PostingsList(String word) {

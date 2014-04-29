@@ -5,6 +5,10 @@ import java.nio.file.Path;
 import java.util.Collection;
 import java.util.List;
 
+/**
+ * An implementation of a {@link ContextIndex} which uses a directory
+ * containing serialized postings lists as its source.
+ */
 public class DirectoryContextIndex implements ContextIndex {
 
     private final Path indexDirectory;

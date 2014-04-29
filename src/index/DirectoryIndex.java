@@ -3,6 +3,9 @@ package index;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
+/**
+ *
+ */
 public class DirectoryIndex implements Index {
 
     private final Path indexDirectory;
