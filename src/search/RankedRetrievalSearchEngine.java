@@ -6,10 +6,12 @@ import index.PostingsEntry;
 import index.PostingsList;
 
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Map.Entry;
 
 import common.Document;
+import common.Util;
 
 /**
  * Basic search engine using ranked retrieval.
@@ -22,31 +24,30 @@ public class RankedRetrievalSearchEngine implements SearchEngine {
         this.index = index;
     }
 
-    //TODO SearchResults should be sorted!
     @Override
     public SearchResults search(Query query) {
-    	int numDocs = 0; //TODO
     	Map<Document, Double> docScores = new HashMap<Document,Double>();
         for(Entry<String, Double> weightedTerm : query){
         	String term = weightedTerm.getKey();
+        	double weight = weightedTerm.getValue();
         	PostingsList postingsList = index.getPostingsList(term);
         	for(PostingsEntry postingsEntry : postingsList){
         		double termFrequency = postingsEntry.getOffsets().size();
 				double numDocsContainingTerm = postingsList.getNumDocuments();
 				double docLength = 0; //TODO
-				double invDocFrequency = Math.round(Math.log(numDocs / numDocsContainingTerm));
-				double tfIdfScore = termFrequency * invDocFrequency / docLength;
-				incrementMap(docScores, postingsEntry.getDocument(), tfIdfScore);
+				double tfIdfScore = tfIdf(termFrequency, numDocsContainingTerm, docLength);
+				tfIdfScore *= weight;
+				Util.incrementMap(docScores, postingsEntry.getDocument(), tfIdfScore);
         	}
         }
-        return new SearchResults(docScores);
+        LinkedHashMap<Document,Double> sortedDocScores = Util.getMapSortedByValues(docScores);
+        return new SearchResults(sortedDocScores);
     }
     
-    private void incrementMap(Map<Document,Double> map, Document key, Double amount){
-    	if(map.containsKey(key)){
-    		map.put(key, map.get(key) + amount);
-    	}else{
-    		map.put(key, amount);
-    	}
+    private double tfIdf(double termFrequency, double numDocsContainingTerm, double docLength){
+    	int numDocs = 0; //TODO
+    	double invDocFrequency = Math.log10(numDocs / numDocsContainingTerm);
+		return termFrequency * invDocFrequency / docLength; //Divide by length later if efficiency is important.
     }
+
 }

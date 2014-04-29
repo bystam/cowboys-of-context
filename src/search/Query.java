@@ -1,7 +1,14 @@
 package search;
 
 import java.util.*;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
 import java.util.Map.Entry;
+
+import common.Util;
 
 
 public class Query implements Iterable<Entry<String,Double>> {
@@ -23,6 +30,7 @@ public class Query implements Iterable<Entry<String,Double>> {
     	} else {
     		weightedTerms.put(term,  weight);
     	}
+    	Util.incrementMap(weightedTerms, term, weight);
     }
 
     @Override
