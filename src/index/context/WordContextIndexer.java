@@ -105,16 +105,16 @@ public class WordContextIndexer extends AbstractIndexer implements ContextIndexe
 
 
     private void savePostingsListToDisk(ContextPostingsList postingsList) {
-        File saveFileName = WordIndexDisk.wordToFileName(postingsList.getName(), savePath);
+        File saveFileName = WordIndexDisk.wordToFileName(postingsList.getOriginalWord(), savePath);
         saveFileName.getParentFile().mkdirs();
         boolean continueWriting = saveFileName.exists();
         try (OutputStream outStream = new BufferedOutputStream(new FileOutputStream(saveFileName, true))) {
             DataOutputStream out = new DataOutputStream(outStream);
             if (!continueWriting) {
-                out.writeUTF(postingsList.getName());
+                out.writeUTF(postingsList.getOriginalWord());
             }
             for (WordRelation entry : postingsList) {
-                savePostingsEntry(out, entry, postingsList.getName());
+                savePostingsEntry(out, entry, postingsList.getOriginalWord());
             }
         } catch (IOException e) {
             e.printStackTrace(System.err);
