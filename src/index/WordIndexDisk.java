@@ -1,9 +1,11 @@
 package index;
-import java.util.*;
-import common.*;
-import java.net.*;
+import common.Document;
+
 import java.io.*;
-import java.nio.file.*;
+import java.net.URLEncoder;
+import java.nio.file.Paths;
+import java.util.LinkedHashMap;
+import java.util.Map;
 /**
  * Handles a index written to disk. Uses a cache to speed up the reading.
  */
@@ -71,8 +73,13 @@ public class WordIndexDisk implements Index {
 		}
 		return postingsList;
 	}
-	
-	//Reads a postings list from a file
+
+    @Override // TODO
+    public DocumentMetaData getDocumentMetaData() {
+        return null;
+    }
+
+    //Reads a postings list from a file
 	private PostingsList readPostingsListFromDisk(File path) {
 		if (!path.canRead() || path.isDirectory())
 			return null;

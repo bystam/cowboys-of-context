@@ -1,6 +1,6 @@
 package gui;
 
-import index.context.Context;
+import index.context.ContextsMap;
 import index.context.ContextIndex;
 import index.context.DummyContextIndex;
 import search.ContextSearchEngine;
@@ -50,10 +50,10 @@ public class SearchWindowController {
         System.out.println("testing testing :)");
     }
 
-    public void displayContext (Context context) {
+    public void displayContext (ContextsMap contextsMap) {
         // TODO dummy
-        context = dummyIndex.getContextForWords(Arrays.asList("apa", "bil"));
-        contextTree.displayContextForWords(context);
+        contextsMap = dummyIndex.getContextsForWords(Arrays.asList("apa", "bil"));
+        contextTree.displayContextForWords(contextsMap);
     }
 
     private void setupSearchListener() {
@@ -82,7 +82,7 @@ public class SearchWindowController {
         JScrollPane contextArea = new JScrollPane(contextTree);
         contextArea.setPreferredSize(contextTree.getPreferredSize());
 
-        contextArea.setBorder(BorderFactory.createTitledBorder("Context"));
+        contextArea.setBorder(BorderFactory.createTitledBorder("ContextsMap"));
         frame.getContentPane().add(contextArea, BorderLayout.EAST);
     }
 

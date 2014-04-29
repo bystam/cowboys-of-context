@@ -1,9 +1,9 @@
 package search;
 
 import index.Index;
-import index.context.Context;
+import index.context.ContextsMap;
 import index.context.ContextIndex;
-import index.context.ContextScore;
+import index.context.WordRelation;
 
 /**
  * Search engine expanding query context before performing ranked retrieval.
@@ -27,9 +27,9 @@ public class ContextSearchEngine extends RankedRetrievalSearchEngine {
     }
 
     private Query expandQueryWithContext(Query query) {
-    	Context context = contextIndex.getContextForWords(query.getTerms());
-    	for(String term : context.getOriginalWords()){
-    		for(ContextScore cs : context.getContextScoresForWord(term)){
+    	ContextsMap contextsMap = contextIndex.getContextsForWords(query.getTerms());
+    	for(String term : contextsMap.getOriginalWords()){
+    		for(WordRelation cs : contextsMap.getContextScoresForWord(term)){
     			query.addOrIncrementTermWeight(cs.getSecondWord(), cs.getScore());
     		}
     	}

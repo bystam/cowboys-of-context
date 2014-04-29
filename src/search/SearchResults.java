@@ -1,10 +1,11 @@
 package search;
 
+import common.Document;
+import index.context.ContextsMap;
+
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Map.Entry;
-
-import common.Document;
 
 /**
  * This is a class representing the results of running a query
@@ -12,7 +13,7 @@ import common.Document;
  * the user links to different hits.
  */
 public class SearchResults implements Iterable<Entry<Document, Double>>{
-	private Map<Document, Double> documents;
+	private final Map<Document, Double> documents;
 	
 	public SearchResults(Map<Document,Double> documents){
 		this.documents = documents;
@@ -22,4 +23,8 @@ public class SearchResults implements Iterable<Entry<Document, Double>>{
 	public Iterator<Entry<Document, Double>> iterator() {
 		return documents.entrySet().iterator();
 	}
+
+    public ContextsMap getContextsMap () {
+        return null;
+    }
 }

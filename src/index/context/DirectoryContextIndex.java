@@ -20,17 +20,12 @@ public class DirectoryContextIndex implements ContextIndex {
     }
 
     @Override
-    public ContextScore getContextScore(String firstWord, String secondWord) {
+    public List<WordRelation> getContextForWord(String word) {
         return null;
     }
 
     @Override
-    public List<ContextScore> getContextsForWord(String word) {
-        return null;
-    }
-
-    @Override
-    public Context getContextForWords(Collection<String> words) {
+    public ContextsMap getContextsForWords(Collection<String> words) {
         return null;
     }
 }

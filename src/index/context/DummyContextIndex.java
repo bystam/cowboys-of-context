@@ -27,27 +27,22 @@ public class DummyContextIndex implements ContextIndex {
         dummyContext.put("bil", bilMap);
     }
 
-
     @Override
-    public ContextScore getContextScore(String firstWord, String secondWord) {
-        return null;
-    }
-
-    @Override
-    public List<ContextScore> getContextsForWord(String word) {
-        List<ContextScore> context = dummyContext.get(word).keySet()
+    public List<WordRelation> getContextForWord(String word) {
+        List<WordRelation> context = dummyContext.get(word).keySet()
                 .stream()
                 .map(associatedWord ->
-                        new ContextScore(word, associatedWord, dummyContext.get(word).get(associatedWord)))
+                        new WordRelation(word, associatedWord, dummyContext.get(word).get(associatedWord)))
                 .collect(Collectors.toList());
+        context.sort(null);
         return context;
     }
 
     @Override
-    public Context getContextForWords(Collection<String> words) {
-        Context context = new Context();
+    public ContextsMap getContextsForWords(Collection<String> words) {
+        ContextsMap contextsMap = new ContextsMap();
         for (String word : words)
-            context.putContextScoresForWord(word, getContextsForWord(word));
-        return context;
+            contextsMap.putContextScoresForWord(word, getContextForWord(word));
+        return contextsMap;
     }
 }

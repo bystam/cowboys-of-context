@@ -5,8 +5,8 @@ import java.io.*;
  * Keeps a map between document ids and their title.
  */
 public class TitleIndex {
-	HashMap<Integer, String> titles = new HashMap<>();
-	File titleFile;
+	private final Map<Integer, String> titles = new HashMap<>();
+	private final File titleFile;
 	private static boolean debug = false;
 	public TitleIndex(File titleFile) {
 		if (!titleFile.canRead())
@@ -53,7 +53,7 @@ public class TitleIndex {
 	
 	/**
 	 * Retrieves the title of the document with the supplied id.
-	 * @param the document id.
+	 * @param id the document id.
 	 * @return the documents title.
 	 */
 	public String getTitle(int id) {

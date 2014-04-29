@@ -205,7 +205,6 @@ public class SimpleTokenizer {
 		return null;
     }
 
-
     /**
      *  Refills the buffer and adds end_of_file "\0" at the appropriate place.
      */
@@ -216,8 +215,3 @@ public class SimpleTokenizer {
 		}
     }
 }
-
-
-
-
-

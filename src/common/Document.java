@@ -1,5 +1,6 @@
 package common;
 
+import java.nio.file.Path;
 import java.nio.file.Paths;
 
 /**
@@ -10,11 +11,15 @@ import java.nio.file.Paths;
 public class Document implements Comparable<Document> {
 
     private final String name;
-    private final String filePath;
+    private final Path filePath;
 
-    public Document(String name, String filePath) {
+    public Document (String filePath) {
+        this(null, filePath);
+    }
+
+    public Document(String name, String filePath) { // TODO remove with field name
         this.name = name;
-        this.filePath = filePath;
+        this.filePath = Paths.get(filePath);
     }
 
 	public String getTitle() {
@@ -22,7 +27,7 @@ public class Document implements Comparable<Document> {
 	}
 
 	public String getFilePath() {
-		return filePath;
+		return filePath.toString();
 	}
 
     @Override
@@ -45,7 +50,7 @@ public class Document implements Comparable<Document> {
 
 	@Override
 	public String toString() {
-		return String.format("[%s \"%s\"]" , Paths.get(filePath), name);
+		return String.format("[%s \"%s\"]" , filePath, name);
 	}
 
     @Override

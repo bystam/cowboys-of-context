@@ -4,7 +4,7 @@ public class BasicContextIndexer { // implements ContextIndexer {
 //
 //    Set<String> visited = new HashSet<>(100);
 //
-//    Context symindex = new Context();
+//    ContextsMap symindex = new ContextsMap();
 //
 //    private final ContextFilter contextFilter = new BlackListContextFilter();
 //
@@ -28,7 +28,7 @@ public class BasicContextIndexer { // implements ContextIndexer {
 //	 * This could either be fixed or a search rule can be implemented as ' if(i > j){ get(j, i)}else{ get(i, j)}'
 //	 *
 //	 */
-//    public void buildIndex(Index index, File indexDirectory){
+//    public void buildIndex(Index index, File contextIndexDirectory, File sourceDirectory) {
 //		Iterator<String> dict = index.getDictionary();
 //
 //		/*Would like a more efficient iteration of the postingslists.
@@ -40,7 +40,7 @@ public class BasicContextIndexer { // implements ContextIndexer {
 //			visited.add(source);
 //
 //			if(contextFilter.isValid(source)){
-//				List<ContextScore> sympl = new ArrayList<>(10);
+//				List<WordRelation> sympl = new ArrayList<>(10);
 //
 //				PostingsList sp = index.getPostingsList(source);
 //
@@ -49,7 +49,7 @@ public class BasicContextIndexer { // implements ContextIndexer {
 //					String target = targetDict.next();
 //					if(!visited.contains(target)){
 //						PostingsList tp = index.getPostingsList(target);
-//						sympl.add(new ContextScore(source, target, computeContextScore(sp, tp)));
+//						sympl.add(new WordRelation(source, target, computeContextScore(sp, tp)));
 //					}
 //				}
 //
@@ -144,8 +144,8 @@ public class BasicContextIndexer { // implements ContextIndexer {
 //			for (String word : symindex.getOriginalWords()) {
 //				StringBuilder sb = new StringBuilder(100);
 //
-//				for (ContextScore contextScore : symindex.getContextScoresForWord(word)) {
-//					sb.append(contextScore.getSecondWord()).append(',').append(contextScore.getScore()).append(':');
+//				for (WordRelation wordRelation : symindex.getContextScoresForWord(word)) {
+//					sb.append(wordRelation.getSecondWord()).append(',').append(wordRelation.getScore()).append(':');
 //				}
 //				i.writeBytes(word+' '+f.getFilePointer());
 //				f.writeBytes(sb.toString());

@@ -20,4 +20,9 @@ public class DirectoryIndex implements Index {
     public PostingsList getPostingsList(String word) {
         return null;
     }
+
+    @Override
+    public DocumentMetaData getDocumentMetaData() {
+        return null;
+    }
 }

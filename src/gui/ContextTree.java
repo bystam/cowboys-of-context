@@ -1,8 +1,8 @@
 package gui;
 
 
-import index.context.Context;
-import index.context.ContextScore;
+import index.context.ContextsMap;
+import index.context.WordRelation;
 
 import javax.swing.*;
 import javax.swing.tree.DefaultMutableTreeNode;
@@ -17,7 +17,7 @@ import java.util.List;
 public class ContextTree extends JTree {
 
     private static final DefaultMutableTreeNode ROOT =
-            new DefaultMutableTreeNode("Context");
+            new DefaultMutableTreeNode("ContextsMap");
 
     public ContextTree () {
         super(ROOT);
@@ -30,11 +30,11 @@ public class ContextTree extends JTree {
         return preferredSize;
     }
 
-    public void displayContextForWords (Context context) {
+    public void displayContextForWords (ContextsMap contextsMap) {
         ROOT.removeAllChildren();
-        for (String word : context.getOriginalWords()) {
+        for (String word : contextsMap.getOriginalWords()) {
             DefaultMutableTreeNode wordNode =
-                    nodeWithContext (word, context.getContextScoresForWord(word));
+                    nodeWithContext (word, contextsMap.getContextScoresForWord(word));
             ROOT.add(wordNode);
         }
 
@@ -42,11 +42,11 @@ public class ContextTree extends JTree {
         setRootVisible(false);
     }
 
-    private DefaultMutableTreeNode nodeWithContext(String word, List<ContextScore> contextScores) {
+    private DefaultMutableTreeNode nodeWithContext(String word, List<WordRelation> wordRelations) {
         DefaultMutableTreeNode wordNode = new DefaultMutableTreeNode (word);
-        for (ContextScore contextScore : contextScores) {
-            String synonym = contextScore.getSecondWord();
-            double score = contextScore.getScore();
+        for (WordRelation wordRelation : wordRelations) {
+            String synonym = wordRelation.getSecondWord();
+            double score = wordRelation.getScore();
 
             DefaultMutableTreeNode subNode =
                     new DefaultMutableTreeNode(synonym + " " + score);
