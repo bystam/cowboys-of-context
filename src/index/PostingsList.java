@@ -10,12 +10,13 @@ import java.util.Map;
 public class PostingsList implements Serializable, Iterable<PostingsEntry> {
 
     private static final long serialVersionUID = 112389123123L;
-	private final String word;
+    private final String word;
     private final Map<Document, PostingsEntry> postingsLookup = new HashMap<>();
 
 	public PostingsList(String word) {
 		this.word = word;
 	}
+	
     @Override
     public Iterator<PostingsEntry> iterator() {
         return postingsLookup.values().iterator();
@@ -36,5 +37,9 @@ public class PostingsList implements Serializable, Iterable<PostingsEntry> {
 
 	public String getWord() {
 		return word;
+	}
+	
+	public int getNumDocuments(){
+		return postingsLookup.size();
 	}
 }

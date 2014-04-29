@@ -2,6 +2,7 @@ package index.context;
 
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.Collection;
 import java.util.List;
 
 /**
@@ -29,7 +30,7 @@ public class DirectoryContextIndex implements ContextIndex {
     }
 
     @Override
-    public Context getContextForWords(List<String> words) {
+    public Context getContextForWords(Collection<String> words) {
         return null;
     }
 }
