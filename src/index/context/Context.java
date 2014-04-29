@@ -6,8 +6,10 @@ import java.util.Map;
 import java.util.Set;
 
 /**
- * Basically a wrappet for a Map<String, List<ContextScore>> to make context
+ * Basically a wrapper for a Map<String, List<ContextScore>> to make context
  * less super-verbose.
+ *
+ * TODO: This is perhaps a bit more than just one Context. A context Set perhaps?
  */
 public class Context {
 

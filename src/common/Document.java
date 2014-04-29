@@ -2,7 +2,12 @@ package common;
 
 import java.nio.file.Paths;
 
-public class Document {
+/**
+ * A simple document identifier, instead of using the quite
+ * stressful docID-system. The file path of the document
+ * is a sufficient identifier.
+ */
+public class Document implements Comparable<Document> {
 
     private final String name;
     private final String filePath;
@@ -42,4 +47,9 @@ public class Document {
 	public String toString() {
 		return String.format("[%s \"%s\"]" , Paths.get(filePath), name);
 	}
+
+    @Override
+    public int compareTo(Document o) {
+        return filePath.compareTo(o.filePath);
+    }
 }

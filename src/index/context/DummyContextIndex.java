@@ -5,6 +5,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+/**
+ * Dummy context index using some hard coded data.
+ */
 public class DummyContextIndex implements ContextIndex {
 
     private final Map<String, Map<String, Double>> dummyContext = new HashMap<>();

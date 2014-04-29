@@ -9,6 +9,11 @@ import javax.swing.tree.DefaultMutableTreeNode;
 import java.awt.*;
 import java.util.List;
 
+/**
+ * A UI element that can display contexts as a tree, where
+ * words and leaves beneath them are context relations
+ * with a score.
+ */
 public class ContextTree extends JTree {
 
     private static final DefaultMutableTreeNode ROOT =

@@ -6,6 +6,9 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Data describing any existing number of occurrences of a word inside a document.
+ */
 public class PostingsEntry implements Serializable {
 
     private static final long serialVersionUID = 12837189273L;
