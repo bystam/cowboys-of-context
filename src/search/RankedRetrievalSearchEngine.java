@@ -1,6 +1,7 @@
 package search;
 
 
+import index.DocumentMetaData;
 import index.Index;
 import index.PostingsEntry;
 import index.PostingsList;
@@ -19,9 +20,11 @@ import common.Util;
 public class RankedRetrievalSearchEngine implements SearchEngine {
 
     private final Index index;
+    private final DocumentMetaData metaData;
 
     public RankedRetrievalSearchEngine (Index index) {
         this.index = index;
+        metaData = index.getDocumentMetaData();
     }
 
     @Override
@@ -34,10 +37,11 @@ public class RankedRetrievalSearchEngine implements SearchEngine {
         	for(PostingsEntry postingsEntry : postingsList){
         		double termFrequency = postingsEntry.getOffsets().size();
 				double numDocsContainingTerm = postingsList.getNumDocuments();
-				double docLength = 0; //TODO
+				Document doc = postingsEntry.getDocument();
+				double docLength = metaData.getDocumentLength(doc);
 				double tfIdfScore = tfIdf(termFrequency, numDocsContainingTerm, docLength);
 				tfIdfScore *= weight;
-				Util.incrementMap(docScores, postingsEntry.getDocument(), tfIdfScore);
+				Util.incrementMap(docScores, doc, tfIdfScore);
         	}
         }
         LinkedHashMap<Document,Double> sortedDocScores = Util.getMapSortedByValues(docScores);
@@ -45,7 +49,7 @@ public class RankedRetrievalSearchEngine implements SearchEngine {
     }
     
     private double tfIdf(double termFrequency, double numDocsContainingTerm, double docLength){
-    	int numDocs = 0; //TODO
+    	int numDocs = metaData.getNumDocuments();
     	double invDocFrequency = Math.log10(numDocs / numDocsContainingTerm);
 		return termFrequency * invDocFrequency / docLength; //Divide by length later if efficiency is important.
     }
