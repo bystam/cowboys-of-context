@@ -52,5 +52,5 @@ public abstract class AbstractIndexer {
         }
     }
 
-    abstract void processToken(String token, int offset, Document document);
+    public abstract void processToken(String token, int offset, Document document);
 }
