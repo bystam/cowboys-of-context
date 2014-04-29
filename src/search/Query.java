@@ -9,6 +9,8 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 
+import common.Util;
+
 
 public class Query implements Iterable<Entry<String,Double>> {
 	
@@ -26,11 +28,7 @@ public class Query implements Iterable<Entry<String,Double>> {
     }
     
     public void addOrIncrementTermWeight(String term, double weight){
-    	if(weightedTerms.containsKey(term)){
-    		weightedTerms.put(term, weightedTerms.get(term) + weight);
-    	}else{
-    		weightedTerms.put(term,  weight);
-    	}
+    	Util.incrementMap(weightedTerms, term, weight);
     }
 
     @Override
