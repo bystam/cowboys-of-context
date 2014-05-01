@@ -27,6 +27,10 @@ public class WordContextIndexer extends AbstractIndexer implements ContextIndexe
     private Map<String, Double> tf_idf_map = new HashMap<> (100);
     private List<String> prev = new ArrayList<> (HORIZON);
 
+
+    /**
+     * Main function that builds the index.
+     */
     public void buildIndex(Index index, File savePath, File sourcePath){
         this.savePath = savePath;
         this.sourcePath = sourcePath;
@@ -36,6 +40,8 @@ public class WordContextIndexer extends AbstractIndexer implements ContextIndexe
         disk_index = new DirectoryContextIndex(Paths.get(savePath.getAbsolutePath()));
 
         indexDirectory(sourcePath);
+
+        saveAllPostingsLists();
     }
 
 
@@ -74,6 +80,7 @@ public class WordContextIndexer extends AbstractIndexer implements ContextIndexe
 
         for(int i=0;i<prev.size();i++){
             String prevt = prev.get(i);
+            if(prevt.equals(token)) continue;
 
             //Kind of sure contextWeight gets the right offset difference
             Double weight = contextWeight(tf_idf_map.get(token),
