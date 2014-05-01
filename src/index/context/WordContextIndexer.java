@@ -12,34 +12,37 @@ import java.util.*;
  */
 public class WordContextIndexer extends AbstractIndexer implements ContextIndexer {
 
+    private static final int HORIZON = 100;
 
     private File savePath;
     private File sourcePath;
     private Index index;
     protected ContextIndex disk_index;
 
-    public void buildIndex(Index index, File savePath, File sourcePath){
+    private DocumentMetaData metaData;
 
+
+    private int horizon_p = 0;
+    private Document current = null;
+    private Map<String, Double> tf_idf_map = new HashMap<> (100);
+    private List<String> prev = new ArrayList<> (HORIZON);
+
+    public void buildIndex(Index index, File savePath, File sourcePath){
         this.savePath = savePath;
         this.sourcePath = sourcePath;
         this.index = index;
+        this.metaData = index.getDocumentMetaData();
 
         disk_index = new DirectoryContextIndex(Paths.get(savePath.getAbsolutePath()));
 
         indexDirectory(sourcePath);
-
     }
-
-
-    private int horizon = 100;
-
-    private HashMap<String, Double> tf_idf_map = new HashMap<String, Double>(100);
 
 
     //Only stores the 10000 last used postings list. When ever it's full writes the last post to disk.
     private LinkedHashMap<String, ContextPostingsList> c_index = new LinkedHashMap<String, ContextPostingsList>(100000, 0.75f, true) {
         private static final long serialVersionUID = 23423535345l;
-        private final int MAX_SIZE = 100000;
+        private static final int MAX_SIZE = 100000;
         @Override
         protected boolean removeEldestEntry(Map.Entry<String, ContextPostingsList> postingsList) {
             if (size()>MAX_SIZE) {
@@ -51,13 +54,7 @@ public class WordContextIndexer extends AbstractIndexer implements ContextIndexe
     };
 
 
-    private ArrayList<String> prev = new ArrayList<String>(horizon);
-    private Document current = null;
-
-    private int horizon_p = 0;
-
-    public void processToken(String token, int offset, Document document){
-
+    @Override public void processToken(String token, int offset, Document document) {
         if(document.equals(current)){
             prev.clear();
             c_index.clear();
@@ -66,12 +63,7 @@ public class WordContextIndexer extends AbstractIndexer implements ContextIndexe
         }
 
         if(!tf_idf_map.containsKey(token)){
-            for(PostingsEntry p : index.getPostingsList(token))
-                if (p.getDocument().equals(document)) {
-                    tf_idf_map.put(token, p.getTfIdf());
-                    break;
-                }
-
+            tf_idf_map.put(token, getTfIdf(token, current));
         }
 
         if(!c_index.containsKey(token)){
@@ -84,18 +76,24 @@ public class WordContextIndexer extends AbstractIndexer implements ContextIndexe
             String prevt = prev.get(i);
 
             //Kind of sure contextWeight gets the right offset difference
-            Double weight = contextWeight(tf_idf_map.get(token), tf_idf_map.get(prevt), horizon_p+1, (horizon_p - i)%horizon, 100); //current.getLength());
+            Double weight = contextWeight(tf_idf_map.get(token),
+                                          tf_idf_map.get(prevt),
+                                          horizon_p + 1,
+                                          (horizon_p - i) % HORIZON,
+                                          metaData.getDocumentLength(current));
+
 
             t_map.addEntry(prevt, weight);
             c_index.get(prevt).addEntry(token, weight);
         }
 
         prev.add(horizon_p, token);
-        horizon_p = (horizon_p + 1) % horizon;
-
-
+        horizon_p = (horizon_p + 1) % HORIZON;
     }
 
+    double getTfIdf (String token, Document current) {
+        return 0.0; // TODO
+    }
 
     double contextWeight(double tf_a, double tf_b, double off_a, double off_b, double length){
         return (tf_a+tf_b)*distanceFactor(off_a, off_b, length);
@@ -114,7 +112,7 @@ public class WordContextIndexer extends AbstractIndexer implements ContextIndexe
 
 
     private void savePostingsListToDisk(ContextPostingsList postingsList) {
-        File saveFileName = WordIndexDisk.wordToFileName(postingsList.getName(), savePath);
+        File saveFileName = WordIndexDisk.wordToFileName(postingsList.getOriginalWord(), savePath);
         saveFileName.getParentFile().mkdirs();
         boolean exists = saveFileName.exists();
 
@@ -133,9 +131,11 @@ public class WordContextIndexer extends AbstractIndexer implements ContextIndexe
         }
         try (OutputStream outStream = new BufferedOutputStream(new FileOutputStream(saveFileName, true))) {
             DataOutputStream out = new DataOutputStream(outStream);
-            out.writeUTF(postingsList.getName());
+            if (!continueWriting) {
+                out.writeUTF(postingsList.getOriginalWord());
+            }
             for (WordRelation entry : postingsList) {
-                savePostingsEntry(out, entry, postingsList.getName());
+                savePostingsEntry(out, entry, postingsList.getOriginalWord());
             }
         } catch (IOException e) {
             e.printStackTrace(System.err);
@@ -152,6 +152,4 @@ public class WordContextIndexer extends AbstractIndexer implements ContextIndexe
             savePostingsListToDisk(postingsList);
         }
     }
-
-
-    }
+}

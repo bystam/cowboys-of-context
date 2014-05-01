@@ -61,7 +61,7 @@ public class WordIndexer extends AbstractIndexer {
 	}
 
     @Override
-    void processToken(String token, int offset, Document document) {
+    public void processToken(String token, int offset, Document document) {
         insertWord(token, document, offset);
     }
 

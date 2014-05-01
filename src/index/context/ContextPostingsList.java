@@ -8,22 +8,20 @@ import java.util.*;
  */
 public class ContextPostingsList implements Serializable, Iterable<WordRelation> {
 
-
-
-    private final String name;
+    private final String originalWord;
     private Map<String, WordRelation> entries = new HashMap<String, WordRelation>(100);
 
-    ContextPostingsList(String name){
-        this.name = name;
+    ContextPostingsList(String originalWord){
+        this.originalWord = originalWord;
     }
 
-    public String getName(){
-        return name;
+    public String getOriginalWord(){
+        return originalWord;
     }
 
     public void addEntry(String token, Double score){
         if(!entries.containsKey(token)){
-            entries.put(token, new WordRelation(name, token, score));
+            entries.put(token, new WordRelation(originalWord, token, score));
         }
         else{
             entries.get(token).incScore(score);
