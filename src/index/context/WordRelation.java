@@ -4,6 +4,11 @@ import java.io.Serializable;
 
 /**
  * This describes a simple context score between two words.
+ *
+ * Naming convention:
+ *      firstWord - word of the postingslist this WordRelation belongs to
+ *      secondWord - an element in the postingslist of firstWord
+ *
  */
 public class WordRelation implements Serializable, Comparable<WordRelation> {
 
@@ -23,14 +28,6 @@ public class WordRelation implements Serializable, Comparable<WordRelation> {
 
     public String getSecondWord() {
         return secondWord;
-    }
-
-    public String getOtherWord(String name){
-        if(name.equals(firstWord)){
-            return secondWord;
-        }
-        return firstWord;
-
     }
 
     public double getScore() {

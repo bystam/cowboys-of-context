@@ -120,30 +120,30 @@ public class WordContextIndexer extends AbstractIndexer implements ContextIndexe
             with postingslist in memory and then save to file.
          */
         if(exists){
-            ContextPostingsList pl = disk_index.readPostingsList(postingsList.getName());
+            ContextPostingsList pl = disk_index.readPostingsList(postingsList.getOriginalWord());
             for(WordRelation wr : postingsList){
-                WordRelation wr2 = pl.get(wr.getOtherWord(postingsList.getName()));
+                WordRelation wr2 = pl.get(wr.getSecondWord());
                 if(wr2 != null) {
-                    pl.addEntry(wr.getOtherWord(postingsList.getName()),wr2.getScore());
+                    pl.addEntry(wr.getSecondWord(),wr2.getScore());
                 }
             }
             postingsList = pl;
         }
         try (OutputStream outStream = new BufferedOutputStream(new FileOutputStream(saveFileName, true))) {
             DataOutputStream out = new DataOutputStream(outStream);
-            if (!continueWriting) {
-                out.writeUTF(postingsList.getOriginalWord());
-            }
+
+            out.writeUTF(postingsList.getOriginalWord());
+
             for (WordRelation entry : postingsList) {
-                savePostingsEntry(out, entry, postingsList.getOriginalWord());
+                savePostingsEntry(out, entry);
             }
         } catch (IOException e) {
             e.printStackTrace(System.err);
         }
     }
 
-    private void savePostingsEntry(DataOutputStream out, WordRelation entry, String name) throws IOException {
-        out.writeUTF(entry.getOtherWord(name));
+    private void savePostingsEntry(DataOutputStream out, WordRelation entry) throws IOException {
+        out.writeUTF(entry.getSecondWord());
         out.writeDouble(entry.getScore());
     }
 
