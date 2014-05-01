@@ -30,6 +30,10 @@ public class ContextPostingsList implements Serializable, Iterable<WordRelation>
         }
     }
 
+    public WordRelation get(String name){
+        return entries.get(name);
+    }
+
     @Override
     public Iterator<WordRelation> iterator() {
         return null;

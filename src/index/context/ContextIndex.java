@@ -25,4 +25,8 @@ public interface ContextIndex {
      * @return A context for all the words
      */
     ContextsMap getContextsForWords(Collection<String> words);
+
+
+    ContextPostingsList readPostingsList(String name);
+
 }

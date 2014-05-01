@@ -4,6 +4,7 @@ import common.Document;
 import index.*;
 
 import java.io.*;
+import java.nio.file.Paths;
 import java.util.*;
 
 /**
@@ -15,12 +16,15 @@ public class WordContextIndexer extends AbstractIndexer implements ContextIndexe
     private File savePath;
     private File sourcePath;
     private Index index;
+    protected ContextIndex disk_index;
 
     public void buildIndex(Index index, File savePath, File sourcePath){
 
         this.savePath = savePath;
         this.sourcePath = sourcePath;
         this.index = index;
+
+        disk_index = new DirectoryContextIndex(Paths.get(savePath.getAbsolutePath()));
 
         indexDirectory(sourcePath);
 
@@ -62,7 +66,12 @@ public class WordContextIndexer extends AbstractIndexer implements ContextIndexe
         }
 
         if(!tf_idf_map.containsKey(token)){
-            tf_idf_map.put(token, index.getTfIdf(token, current));
+            for(PostingsEntry p : index.getPostingsList(token))
+                if (p.getDocument().equals(document)) {
+                    tf_idf_map.put(token, p.getTfIdf());
+                    break;
+                }
+
         }
 
         if(!c_index.containsKey(token)){
@@ -75,7 +84,7 @@ public class WordContextIndexer extends AbstractIndexer implements ContextIndexe
             String prevt = prev.get(i);
 
             //Kind of sure contextWeight gets the right offset difference
-            Double weight = contextWeight(tf_idf_map.get(token), tf_idf_map.get(prevt), horizon_p+1, (horizon_p - i)%horizon, current.getLength());
+            Double weight = contextWeight(tf_idf_map.get(token), tf_idf_map.get(prevt), horizon_p+1, (horizon_p - i)%horizon, 100); //current.getLength());
 
             t_map.addEntry(prevt, weight);
             c_index.get(prevt).addEntry(token, weight);
@@ -107,12 +116,24 @@ public class WordContextIndexer extends AbstractIndexer implements ContextIndexe
     private void savePostingsListToDisk(ContextPostingsList postingsList) {
         File saveFileName = WordIndexDisk.wordToFileName(postingsList.getName(), savePath);
         saveFileName.getParentFile().mkdirs();
-        boolean continueWriting = saveFileName.exists();
+        boolean exists = saveFileName.exists();
+
+        /* If the postingslist exists on file, read that postingslist from file and merge it
+            with postingslist in memory and then save to file.
+         */
+        if(exists){
+            ContextPostingsList pl = disk_index.readPostingsList(postingsList.getName());
+            for(WordRelation wr : postingsList){
+                WordRelation wr2 = pl.get(wr.getOtherWord(postingsList.getName()));
+                if(wr2 != null) {
+                    pl.addEntry(wr.getOtherWord(postingsList.getName()),wr2.getScore());
+                }
+            }
+            postingsList = pl;
+        }
         try (OutputStream outStream = new BufferedOutputStream(new FileOutputStream(saveFileName, true))) {
             DataOutputStream out = new DataOutputStream(outStream);
-            if (!continueWriting) {
-                out.writeUTF(postingsList.getName());
-            }
+            out.writeUTF(postingsList.getName());
             for (WordRelation entry : postingsList) {
                 savePostingsEntry(out, entry, postingsList.getName());
             }
