@@ -1,13 +1,13 @@
 package gui;
 
 
+import index.context.ContextPostingsList;
 import index.context.ContextsMap;
 import index.context.WordRelation;
 
 import javax.swing.*;
 import javax.swing.tree.DefaultMutableTreeNode;
 import java.awt.*;
-import java.util.List;
 
 /**
  * A UI element that can display contexts as a tree, where
@@ -42,9 +42,9 @@ public class ContextTree extends JTree {
         setRootVisible(false);
     }
 
-    private DefaultMutableTreeNode nodeWithContext(String word, List<WordRelation> wordRelations) {
+    private DefaultMutableTreeNode nodeWithContext(String word, ContextPostingsList contextPostingsList) {
         DefaultMutableTreeNode wordNode = new DefaultMutableTreeNode (word);
-        for (WordRelation wordRelation : wordRelations) {
+        for (WordRelation wordRelation : contextPostingsList) {
             String synonym = wordRelation.getSecondWord();
             double score = wordRelation.getScore();
 

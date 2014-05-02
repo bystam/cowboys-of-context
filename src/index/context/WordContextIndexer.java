@@ -17,7 +17,7 @@ public class WordContextIndexer extends AbstractIndexer implements ContextIndexe
     private File savePath;
     private File sourcePath;
     private Index index;
-    protected ContextIndex disk_index;
+    protected DirectoryContextIndex disk_index;
 
     private DocumentMetaData metaData;
 

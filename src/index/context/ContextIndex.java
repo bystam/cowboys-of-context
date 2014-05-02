@@ -1,7 +1,6 @@
 package index.context;
 
 import java.util.Collection;
-import java.util.List;
 
 /**
  * A ContextsMap Index is an index that contains information about the relations
@@ -25,8 +24,4 @@ public interface ContextIndex {
      * @return A context for all the words
      */
     ContextsMap getContextsForWords(Collection<String> words);
-
-
-    ContextPostingsList readPostingsList(String name);
-
 }

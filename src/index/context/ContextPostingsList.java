@@ -34,6 +34,6 @@ public class ContextPostingsList implements Serializable, Iterable<WordRelation>
 
     @Override
     public Iterator<WordRelation> iterator() {
-        return null;
+        return entries.values().iterator();
     }
 }

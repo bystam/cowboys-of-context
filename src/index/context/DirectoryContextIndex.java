@@ -3,10 +3,8 @@ package index.context;
 import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.Collection;
 import java.util.LinkedHashMap;
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -65,7 +63,7 @@ public class DirectoryContextIndex implements ContextIndex {
 
 
 
-    public ContextPostingsList readPostingsList(String name){
+    ContextPostingsList readPostingsList(String name){
         File path = indexDirectory.resolve(name).toFile();
         if (!path.canRead() || path.isDirectory())
             return null;
