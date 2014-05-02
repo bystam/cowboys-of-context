@@ -11,7 +11,7 @@ import java.util.Map;
  */
 public class WordIndexDisk implements Index {
 	private final File directory;
-
+	private DocumentMetaData documentMetaData;
 	/**
 	 * A cached index which contains the last MAX_SIZE posting lists retrieved.
 	 */
@@ -33,6 +33,7 @@ public class WordIndexDisk implements Index {
 		if (!directory.canRead() || !directory.isDirectory()) {
 			throw new IllegalArgumentException("Can't read the word index or it's not directory.");
 		}
+		documentMetaData = readDocumentMetaDataFromDisk();
 	}
 	/**
 	 * Only for testing...
@@ -54,6 +55,8 @@ public class WordIndexDisk implements Index {
 			}
 			System.out.println("Index size: "+index.index.size());
 		}
+		DocumentMetaData docMeta = index.getDocumentMetaData();
+		System.out.println(docMeta.getDocumentCount());
 	}
 
 
@@ -74,9 +77,8 @@ public class WordIndexDisk implements Index {
 		return postingsList;
 	}
 
-    @Override // TODO
     public DocumentMetaData getDocumentMetaData() {
-        return null;
+        return documentMetaData;
     }
 
     //Reads a postings list from a file
@@ -96,7 +98,7 @@ public class WordIndexDisk implements Index {
 
 	//Reads a single postings entry from a file
 	private PostingsEntry readPostingsEntry(DataInputStream in) throws IOException {
-		PostingsEntry entry = new PostingsEntry(new Document(in.readUTF(), in.readUTF()));
+		PostingsEntry entry = new PostingsEntry(new Document(in.readUTF()));
 		int offsetCount = in.readInt();
 		for (int i=0; i<offsetCount; i++) {
 			entry.addOffset(in.readInt());
@@ -120,6 +122,19 @@ public class WordIndexDisk implements Index {
 				.resolve(String.format("%s/index_%s.txt", encodedWord.substring(0, 1), encodedWord)).toFile();
 		} catch (IOException e) {
 			System.out.println("Could not find encoding: "+e);
+		}
+		return null;
+	}
+
+	/**
+	 * Reads the DocumentMetaData from disk.
+	 */
+	private DocumentMetaData readDocumentMetaDataFromDisk() {
+		File docMetaSavePath = directory.toPath().resolve("documentMeta.bin").toFile();
+		try (ObjectInputStream in = new ObjectInputStream(new FileInputStream(docMetaSavePath))) {
+				return (DocumentMetaData)in.readObject();
+			} catch (IOException | ClassNotFoundException e) {
+			e.printStackTrace(System.err);
 		}
 		return null;
 	}
