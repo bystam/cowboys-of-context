@@ -64,7 +64,7 @@ public class WordIndexer extends AbstractIndexer {
         insertWord(token, document, offset);
 		if (offset==0 && lastDoc != null) {
 			docMetaData.setDocumentLength(lastDoc, docLength);
-			docMetaData.setDocumentCount(docMetaData.getDocumentCount()+1);
+			docMetaData.setDocumentCount(docMetaData.getNumDocuments()+1);
 		}
 		docLength = offset;
 		lastDoc = document;
@@ -120,7 +120,7 @@ public class WordIndexer extends AbstractIndexer {
 	public void saveToDisk() {
 		//Update info for the last document
 		docMetaData.setDocumentLength(lastDoc, docLength);
-		docMetaData.setDocumentCount(docMetaData.getDocumentCount()+1);
+		docMetaData.setDocumentCount(docMetaData.getNumDocuments()+1);
 		for (PostingsList postingsList : index.values()) {
 			savePostingsListToDisk(postingsList);
 		}

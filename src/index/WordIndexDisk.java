@@ -56,7 +56,7 @@ public class WordIndexDisk implements Index {
 			System.out.println("Index size: "+index.index.size());
 		}
 		DocumentMetaData docMeta = index.getDocumentMetaData();
-		System.out.println(docMeta.getDocumentCount());
+		System.out.println(docMeta.getNumDocuments());
 	}
 
 
