@@ -2,9 +2,7 @@ package index.context;
 
 import java.util.Collection;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 /**
  * Dummy context index using some hard coded data.
@@ -28,14 +26,16 @@ public class DummyContextIndex implements ContextIndex {
     }
 
     @Override
-    public List<WordRelation> getContextForWord(String word) {
-        List<WordRelation> context = dummyContext.get(word).keySet()
+    public ContextPostingsList getContextForWord(String word) {
+        ContextPostingsList contextPostingsList = new ContextPostingsList(word);
+        dummyContext.get(word).entrySet()
                 .stream()
-                .map(associatedWord ->
-                        new WordRelation(word, associatedWord, dummyContext.get(word).get(associatedWord)))
-                .collect(Collectors.toList());
-        context.sort(null);
-        return context;
+                .forEach((e) -> {
+                    String otherWord = e.getKey();
+                    double score = e.getValue();
+                    contextPostingsList.addEntry(otherWord, score);
+                });
+        return contextPostingsList;
     }
 
     @Override

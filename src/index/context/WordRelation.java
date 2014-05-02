@@ -1,13 +1,20 @@
 package index.context;
 
+import java.io.Serializable;
+
 /**
  * This describes a simple context score between two words.
+ *
+ * Naming convention:
+ *      firstWord - word of the postingslist this WordRelation belongs to
+ *      secondWord - an element in the postingslist of firstWord
+ *
  */
-public class WordRelation implements Comparable<WordRelation> {
+public class WordRelation implements Serializable, Comparable<WordRelation> {
 
     private final String firstWord;
     private final String secondWord;
-    private final double score;
+    private double score;
 
     public WordRelation(String firstWord, String secondWord, double score) {
         this.firstWord = firstWord;
@@ -25,6 +32,10 @@ public class WordRelation implements Comparable<WordRelation> {
 
     public double getScore() {
         return score;
+    }
+
+    public void incScore(double score){
+        this.score += score;
     }
 
     @Override

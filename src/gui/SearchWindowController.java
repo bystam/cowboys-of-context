@@ -1,7 +1,7 @@
 package gui;
 
-import index.context.ContextsMap;
 import index.context.ContextIndex;
+import index.context.ContextsMap;
 import index.context.DummyContextIndex;
 import search.ContextSearchEngine;
 import search.Query;

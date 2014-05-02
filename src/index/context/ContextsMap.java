@@ -1,7 +1,6 @@
 package index.context;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -13,13 +12,25 @@ import java.util.Set;
  */
 public class ContextsMap {
 
-    private final Map<String, List<WordRelation>> context = new HashMap<>();
+    private final Map<String, ContextPostingsList> context = new HashMap<>(100);
+    private Map<String, Double> queryExpansionCandidates = new HashMap<>(100);
 
-    public void putContextScoresForWord (String word, List<WordRelation> wordRelations) {
+    public void putContextScoresForWord (String word, ContextPostingsList wordRelations) {
         context.put(word, wordRelations);
+
+        //Collect the scores of 'target' words, i.e all the words that words in the query has relations to
+        for(WordRelation wr : wordRelations){
+            if(queryExpansionCandidates.containsKey(wr.getSecondWord())){
+                queryExpansionCandidates.put(wr.getSecondWord(), wr.getScore() + queryExpansionCandidates.get(wr.getSecondWord()));
+            }else{
+                queryExpansionCandidates.put(wr.getSecondWord(), wr.getScore());
+            }
+        }
     }
 
-    public List<WordRelation> getContextScoresForWord (String word) {
+    public Map<String, Double> getQueryExpansionCandidates(){ return queryExpansionCandidates; }
+
+    public ContextPostingsList getContextScoresForWord (String word) {
         return context.get(word);
     }
 

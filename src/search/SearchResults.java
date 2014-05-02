@@ -14,9 +14,19 @@ import java.util.Map.Entry;
  */
 public class SearchResults implements Iterable<Entry<Document, Double>>{
 	private final Map<Document, Double> documents;
+	private final ContextsMap contexts;
+	
+	public SearchResults(Map<Document,Double> documents, ContextsMap contexts){
+		this.documents = documents;
+		this.contexts = contexts;
+	}
 	
 	public SearchResults(Map<Document,Double> documents){
-		this.documents = documents;
+		this(documents, null);
+	}
+	
+	public SearchResults(SearchResults simpleResults, ContextsMap contexts){
+		this(simpleResults.documents, contexts);
 	}
 
 	@Override
@@ -25,6 +35,9 @@ public class SearchResults implements Iterable<Entry<Document, Double>>{
 	}
 
     public ContextsMap getContextsMap () {
-        return null;
+    	if(contexts == null){
+    		throw new IllegalStateException("This is the result from a simple search (no context).");
+    	}
+        return contexts;
     }
 }

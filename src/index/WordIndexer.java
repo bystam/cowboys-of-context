@@ -60,7 +60,7 @@ public class WordIndexer extends AbstractIndexer {
 	
 
     @Override
-    void processToken(String token, int offset, Document document) {
+    public void processToken(String token, int offset, Document document) {
         insertWord(token, document, offset);
 		if (offset==0 && lastDoc != null) {
 			docMetaData.setDocumentLength(lastDoc, docLength);

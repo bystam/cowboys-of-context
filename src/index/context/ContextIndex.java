@@ -1,7 +1,6 @@
 package index.context;
 
 import java.util.Collection;
-import java.util.List;
 
 /**
  * A ContextsMap Index is an index that contains information about the relations
@@ -17,7 +16,7 @@ public interface ContextIndex {
      * @param word The word to find context scores for
      * @return A List of sortable context scores
      */
-    List<WordRelation> getContextForWord(String word);
+    ContextPostingsList getContextForWord(String word);
 
     /**
      * Get all related words (context scores) to the input words.
