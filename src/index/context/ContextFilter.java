@@ -19,5 +19,5 @@ public interface ContextFilter {
      * @param word
      * @return <code>true</code> if the word should be included, and <code>false</code> if not
      */
-    boolean isValid(String word);
+    boolean isValid(String word, double tf_idf);
 }

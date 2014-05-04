@@ -13,7 +13,7 @@ public class BlackListContextFilter implements ContextFilter {
 	 * as important could e.g be if it occurs in
 	 * as least one document with tf-idf > TF_IDF_THRESHOLD.
 	 */
-	public boolean isValid(String word){
+	public boolean isValid(String word, double tf_idf){
 		return !blacklist.contains(word);
 	}
 }

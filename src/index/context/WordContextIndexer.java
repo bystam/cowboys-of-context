@@ -3,6 +3,7 @@ package index.context;
 import common.Document;
 import index.*;
 
+import javax.naming.Context;
 import java.io.*;
 import java.nio.file.Paths;
 import java.util.*;
@@ -26,6 +27,10 @@ public class WordContextIndexer extends AbstractIndexer implements ContextIndexe
     private Document current = null;
     private Map<String, Double> tf_idf_map = new HashMap<>(100);
     private List<String> prev = new ArrayList<> (HORIZON);
+
+    //ContextFilter to determine which words are relevant
+    //Using a simple meancontextfilter TODO: Implement better contextfilter
+    ContextFilter context_filter = new MeanContextFiler(0.4);
 
 
     /**
@@ -70,6 +75,9 @@ public class WordContextIndexer extends AbstractIndexer implements ContextIndexe
 
         if(!tf_idf_map.containsKey(token)){
             tf_idf_map.put(token, getTfIdf(token, current));
+        }
+        if(!context_filter.isValid(token, tf_idf_map.get(token))){
+            return;
         }
 
         if(!c_index.containsKey(token)){
@@ -168,4 +176,36 @@ public class WordContextIndexer extends AbstractIndexer implements ContextIndexe
             savePostingsListToDisk(postingsList);
         }
     }
+
+
+    /**
+     * Main function for indexing with a contextindexer
+     * @param args
+     * args[0] - savepath of the context index
+     * args[1] - location of normal index
+     * args[2]... - directories/files that the context indexer should process (should be the same as given to the normal indexer)
+     */
+
+    public static void main(String[] args) {
+        if (args.length < 3) {
+            System.out.println("Usage: java WordIndexer savepath docpath [doc path]...");
+            return;
+        }
+        File savePath = new File(args[0]);
+        savePath.mkdirs();
+        Index index = new DirectoryIndex(Paths.get(args[1]));
+        WordContextIndexer indexer = new WordContextIndexer();
+        for (int i=2; i<args.length; i++) {
+            File loadPath = new File(args[i]);
+            try {
+                indexer.indexDirectory(loadPath);
+            } catch (Exception e) {
+                System.err.println("There was an error while processing the directory: "+loadPath);
+                e.printStackTrace(System.err);
+            }
+        }
+        indexer.saveAllPostingsLists();
+    }
+
+
 }
