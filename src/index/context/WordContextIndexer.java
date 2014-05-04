@@ -119,7 +119,7 @@ public class WordContextIndexer extends AbstractIndexer implements ContextIndexe
 
 
     private void savePostingsListToDisk(ContextPostingsList postingsList) {
-        File saveFileName = DirectoryIndex.wordToFileName(postingsList.getOriginalWord(), savePath);
+        File saveFileName = DirectoryIndex.wordToFileName(postingsList.getOriginalWord(), savePath.toPath());
         saveFileName.getParentFile().mkdirs();
         boolean exists = saveFileName.exists();
 
