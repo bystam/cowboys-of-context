@@ -18,6 +18,8 @@ public class SearchWindowController {
     private final ContextIndex dummyIndex = new DummyContextIndex();
     private final SearchEngine searchEngine;
 
+    private final SimpleSwingBrowser browser = new SimpleSwingBrowser();
+
     private JTextField queryField;
     private JEditorPane resultsArea;
     private ContextTree contextTree;
