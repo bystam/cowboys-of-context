@@ -58,6 +58,7 @@ public class SearchWindowController {
         });
         results.append("</ul></html>");
         resultsArea.setText(results.toString());
+        resultsArea.setCaretPosition(0);
         displayContext(null);
     }
 
