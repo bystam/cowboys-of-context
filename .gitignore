@@ -59,6 +59,8 @@ target/
 sources.txt
 \#*#
 
+# index data
+svwiki/
 
 # indexing
 /index/
