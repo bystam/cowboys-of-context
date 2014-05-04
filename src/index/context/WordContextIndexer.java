@@ -24,7 +24,7 @@ public class WordContextIndexer extends AbstractIndexer implements ContextIndexe
 
     private int horizon_p = 0;
     private Document current = null;
-    private Map<String, Double> tf_idf_map = new HashMap<> (100);
+    private Map<String, Double> tf_idf_map = new HashMap<>(100);
     private List<String> prev = new ArrayList<> (HORIZON);
 
 
@@ -99,7 +99,16 @@ public class WordContextIndexer extends AbstractIndexer implements ContextIndexe
     }
 
     double getTfIdf (String token, Document current) {
-        return 0.0; // TODO
+        PostingsList pl = index.getPostingsList(token);
+        if(pl==null){
+            return 0;
+        }
+        for(PostingsEntry pe : pl){
+            if(pe.equals(current)){
+                return pe.getTfIdf();
+            }
+        }
+        return 0;
     }
 
     double contextWeight(double tf_a, double tf_b, double off_a, double off_b, double length){
