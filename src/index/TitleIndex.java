@@ -21,7 +21,7 @@ public class TitleIndex {
 	public static void main(String[] args) {
 		debug = true;
 		TitleIndex titleIndex = new TitleIndex(new File("../articleTitles.txt"));
-		System.out.println(titleIndex.getTitle(new File("../1000/33.txt")));
+		System.out.println(titleIndex.getTitle("../1000/33.txt"));
 	}
 
 	//parses the titleFile
@@ -41,9 +41,9 @@ public class TitleIndex {
 	/**
 	 * Extracts a number from the file name and uses it as ID to get the title.
 	 */
-	public String getTitle(File docFile) {
+	public String getTitle(String docFile) {
 		//Extract the number from the filename
-		String idAsString = docFile.getName().replaceAll("[\\D]" , "");
+		String idAsString = docFile.replaceAll("[\\D]" , "");
 		if (debug)
 			System.out.println(idAsString);
 		if (idAsString.isEmpty())

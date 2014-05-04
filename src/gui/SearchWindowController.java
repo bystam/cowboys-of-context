@@ -1,5 +1,6 @@
 package gui;
 
+import index.TitleIndex;
 import index.context.ContextIndex;
 import index.context.ContextsMap;
 import index.context.DummyContextIndex;
@@ -19,6 +20,7 @@ public class SearchWindowController {
 
     private final ContextIndex dummyIndex = new DummyContextIndex();
     private final SearchEngine searchEngine;
+    private final TitleIndex titleIndex;
 
     private final SimpleSwingBrowser browser = new SimpleSwingBrowser();
 
@@ -26,8 +28,9 @@ public class SearchWindowController {
     private JEditorPane resultsArea;
     private ContextTree contextTree;
 
-    public SearchWindowController(SearchEngine searchEngine) {
+    public SearchWindowController(SearchEngine searchEngine, TitleIndex titleIndex) {
         this.searchEngine = searchEngine;
+        this.titleIndex = titleIndex;
     }
 
     public void displayFrame () {
@@ -47,7 +50,7 @@ public class SearchWindowController {
         StringBuilder results = new StringBuilder ("<html><ul>");
         searchResults.forEach((e) -> {
             results.append("<li>").
-                    append(e.getKey().getFilePath()).
+                    append(titleIndex.getTitle(e.getKey().getFilePath())).
                     append(" <b>").
                     append(e.getValue()).
                     append("</b>").

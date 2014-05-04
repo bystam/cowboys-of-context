@@ -2,12 +2,15 @@ package gui;
 
 import index.DirectoryIndex;
 import index.Index;
+import index.TitleIndex;
 import index.context.ContextIndex;
 import index.context.DirectoryContextIndex;
 import search.ContextSearchEngine;
 import search.RankedRetrievalSearchEngine;
 import search.SearchEngine;
 
+import java.awt.*;
+import java.io.File;
 import java.nio.file.Paths;
 
 public class MainProgram {
@@ -23,9 +26,11 @@ public class MainProgram {
             searchEngine = getContextSearchEngine (args);
         }
 
-        SearchWindowController searchWindowController = new SearchWindowController(searchEngine);
+        TitleIndex titleIndex = new TitleIndex(new File("./index/articleTitles.txt"));
+        SearchWindowController searchWindowController =
+                new SearchWindowController(searchEngine, titleIndex);
 
-        searchWindowController.displayFrame();
+        EventQueue.invokeLater(() -> searchWindowController.displayFrame());
     }
 
     private static SearchEngine getRankedRetrievalSearchEngine(String[] args) {
