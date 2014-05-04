@@ -77,7 +77,7 @@ public class DirectoryIndex implements Index {
 				index.put(word, postingsList);
 			}
 		}
-		return postingsList;
+		return postingsList != null ? postingsList : PostingsList.EMPTY;
 	}
 
     public DocumentMetaData getDocumentMetaData() {

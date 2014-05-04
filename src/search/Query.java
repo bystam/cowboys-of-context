@@ -1,14 +1,9 @@
 package search;
 
-import java.util.*;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
-
 import common.Util;
+
+import java.util.*;
+import java.util.Map.Entry;
 
 
 public class Query implements Iterable<Entry<String,Double>> {
@@ -19,7 +14,7 @@ public class Query implements Iterable<Entry<String,Double>> {
 
     public Query (String queryString) {
         queryString = queryString.trim();
-        List<String> terms = Arrays.asList(queryString.split(" \t"));
+        List<String> terms = Arrays.asList(queryString.split(" "));
         for (String word : terms)
         	weightedTerms.put(word, DEFAULT_WEIGHT);
     }

@@ -10,6 +10,8 @@ import search.SearchResults;
 import javax.swing.*;
 import javax.swing.text.html.HTMLEditorKit;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.KeyEvent;
 import java.util.Arrays;
 import java.util.concurrent.ExecutionException;
 
@@ -23,7 +25,6 @@ public class SearchWindowController {
     private JTextField queryField;
     private JEditorPane resultsArea;
     private ContextTree contextTree;
-
 
     public SearchWindowController(SearchEngine searchEngine) {
         this.searchEngine = searchEngine;
@@ -54,6 +55,7 @@ public class SearchWindowController {
         });
         results.append("</ul></html>");
         resultsArea.setText(results.toString());
+        displayContext(null);
     }
 
     public void displayContext (ContextsMap contextsMap) {
@@ -67,6 +69,16 @@ public class SearchWindowController {
             Query query = new Query(queryField.getText());
             new SearchWorker(query).execute();
         });
+        KeyStroke ctrlL = KeyStroke.getKeyStroke(KeyEvent.VK_L,
+                                                 Toolkit.getDefaultToolkit().getMenuShortcutKeyMask());
+        queryField.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(ctrlL, "focus search");
+        queryField.getActionMap().put("focus search", new AbstractAction() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                queryField.requestFocus();
+                queryField.selectAll();
+            }
+        });
     }
 
     private void addQueryArea(JFrame frame) {
@@ -75,6 +87,7 @@ public class SearchWindowController {
 
         resultsArea = new JEditorPane();
         resultsArea.setEditorKit(new HTMLEditorKit());
+        resultsArea.setEditable(false);
         JScrollPane resultsScrollPane = new JScrollPane(resultsArea);
         resultsScrollPane.setBorder(BorderFactory.createTitledBorder("Search result"));
 
