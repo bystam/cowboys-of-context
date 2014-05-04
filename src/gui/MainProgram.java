@@ -14,7 +14,7 @@ public class MainProgram {
 
     public static void main(String[] args) {
         SearchEngine searchEngine;
-        if (args.length == 1) {
+        if (args.length == 0) {
             usage();
             return;
         } else if (args.length == 1) {

@@ -8,6 +8,7 @@ import search.SearchEngine;
 import search.SearchResults;
 
 import javax.swing.*;
+import javax.swing.text.html.HTMLEditorKit;
 import java.awt.*;
 import java.util.Arrays;
 import java.util.concurrent.ExecutionException;
@@ -18,7 +19,7 @@ public class SearchWindowController {
     private final SearchEngine searchEngine;
 
     private JTextField queryField;
-    private JTextArea resultsArea;
+    private JEditorPane resultsArea;
     private ContextTree contextTree;
 
 
@@ -39,7 +40,17 @@ public class SearchWindowController {
     }
 
     public void displaySearchResults (SearchResults searchResults) {
-        System.out.println("testing testing :)");
+        StringBuilder results = new StringBuilder ("<html><ul>");
+        searchResults.forEach((e) -> {
+            results.append("<li>").
+                    append(e.getKey().getFilePath()).
+                    append(" <b>").
+                    append(e.getValue()).
+                    append("</b>").
+                    append("</li>");
+        });
+        results.append("</ul></html>");
+        resultsArea.setText(results.toString());
     }
 
     public void displayContext (ContextsMap contextsMap) {
@@ -59,7 +70,8 @@ public class SearchWindowController {
         queryField = new JTextField();
         queryField.setBorder(BorderFactory.createTitledBorder("Query"));
 
-        resultsArea = new JTextArea();
+        resultsArea = new JEditorPane();
+        resultsArea.setEditorKit(new HTMLEditorKit());
         JScrollPane resultsScrollPane = new JScrollPane(resultsArea);
         resultsScrollPane.setBorder(BorderFactory.createTitledBorder("Search result"));
 
