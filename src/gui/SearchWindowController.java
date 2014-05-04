@@ -3,7 +3,6 @@ package gui;
 import index.context.ContextIndex;
 import index.context.ContextsMap;
 import index.context.DummyContextIndex;
-import search.ContextSearchEngine;
 import search.Query;
 import search.SearchEngine;
 import search.SearchResults;
@@ -22,13 +21,6 @@ public class SearchWindowController {
     private JTextArea resultsArea;
     private ContextTree contextTree;
 
-    public static void main(String[] args) {
-        SearchWindowController searchWindowController =
-                new SearchWindowController(new ContextSearchEngine(null, null));
-
-        searchWindowController.displayFrame();
-        searchWindowController.displayContext(null);
-    }
 
     public SearchWindowController(SearchEngine searchEngine) {
         this.searchEngine = searchEngine;

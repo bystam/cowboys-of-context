@@ -80,7 +80,7 @@ public class WordIndexer extends AbstractIndexer {
 	}
 
 	private void savePostingsListToDisk(PostingsList postingsList) {
-		File saveFileName = WordIndexDisk.wordToFileName(postingsList.getWord(), savePath);
+		File saveFileName = DirectoryIndex.wordToFileName(postingsList.getWord(), savePath);
 		saveFileName.getParentFile().mkdirs();
 		boolean continueWriting = saveFileName.exists();
 		try (OutputStream outStream = new BufferedOutputStream(new FileOutputStream(saveFileName, true))) {
