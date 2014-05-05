@@ -50,8 +50,12 @@ public class SearchWindowController {
         StringBuilder results = new StringBuilder ("<html><ul>");
         searchResults.forEach((e) -> {
             results.append("<li>").
+                    append("<a href='http://sv.wikipedia.org/wiki/").
                     append(titleIndex.getTitle(e.getKey().getFilePath())).
-                    append(" <b>").
+                    append("'>").
+                    append(titleIndex.getTitle(e.getKey().getFilePath())).
+                    append("</a>").
+                    append("<b>").
                     append(e.getValue()).
                     append("</b>").
                     append("</li>");
