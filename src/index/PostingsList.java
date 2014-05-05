@@ -45,4 +45,8 @@ public class PostingsList implements Serializable, Iterable<PostingsEntry> {
 	public int getNumDocuments(){
 		return postingsLookup.size();
 	}
+
+    public PostingsEntry getEntryForDocument (Document document) {
+        return postingsLookup.get(document);
+    }
 }

@@ -3,7 +3,6 @@ package index.context;
 import common.Document;
 import index.*;
 
-import javax.naming.Context;
 import java.io.*;
 import java.nio.file.Paths;
 import java.util.*;
@@ -111,12 +110,8 @@ public class WordContextIndexer extends AbstractIndexer implements ContextIndexe
         if(pl==null){
             return 0;
         }
-        for(PostingsEntry pe : pl){
-            if(pe.equals(current)){
-                return pe.getTfIdf();
-            }
-        }
-        return 0;
+        PostingsEntry pe = pl.getEntryForDocument(current);
+        return pe != null ? pe.getTfIdf() : 0;
     }
 
     double contextWeight(double tf_a, double tf_b, double off_a, double off_b, double length){
