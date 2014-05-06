@@ -3,7 +3,6 @@ package gui;
 import common.Document;
 import index.TitleIndex;
 import index.context.ContextIndex;
-import index.context.ContextsMap;
 import index.context.DummyContextIndex;
 import search.Query;
 import search.SearchEngine;
@@ -13,7 +12,6 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
-import java.util.Arrays;
 import java.util.Map;
 import java.util.concurrent.ExecutionException;
 
@@ -51,7 +49,7 @@ public class SearchWindowController {
         frame.setVisible(true);
     }
 
-    public void displaySearchResults (SearchResults searchResults) {
+    public void displaySearchResults(Query query, SearchResults searchResults) {
         final GridBagConstraints gbc = new GridBagConstraints();
         gbc.ipadx = gbc.ipady = 3;
         gbc.anchor = GridBagConstraints.FIRST_LINE_START;
@@ -86,26 +84,12 @@ public class SearchWindowController {
         resultsArea.revalidate();
         resultsArea.repaint();
 
-        if (searchResults.hasContextsMap()) {
-        	displayContext(searchResults.getContextsMap());
-        	System.out.println("ContextsMap returned from search " + searchResults.getContextsMap().getOriginalWords());
-        } else {
-        	displayContext(null);
-        	System.out.println("No contextsMap returned from search");
-        }
+        contextTree.displayContextForWords(query, searchResults.getContextsMap());
     }
 
     private String nameToWikiLink (String name) {
         name = name.replaceAll(" ", "_");
         return String.format("http://sv.wikipedia.org/wiki/%s", name);
-    }
-
-    public void displayContext (ContextsMap contextsMap) {
-        if(contextsMap == null){ //TODO
-        	contextsMap = dummyIndex.getContextsForWords(Arrays.asList("apa", "bil"));
-        }
-        contextTree.displayContextForWords(contextsMap);
-        //TODO Verkar inte uppdater grafiken "efter första contextMappen"
     }
 
     private void setupSearchListener() {
@@ -167,7 +151,7 @@ public class SearchWindowController {
         @Override
         protected void done() {
             try {
-                displaySearchResults(get());
+                displaySearchResults(query, get());
             } catch (InterruptedException | ExecutionException e) {
                 e.printStackTrace();
             }

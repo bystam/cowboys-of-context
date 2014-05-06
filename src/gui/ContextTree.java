@@ -4,6 +4,7 @@ package gui;
 import index.context.ContextPostingsList;
 import index.context.ContextsMap;
 import index.context.WordRelation;
+import search.Query;
 
 import javax.swing.*;
 import javax.swing.tree.DefaultMutableTreeNode;
@@ -31,9 +32,9 @@ public class ContextTree extends JTree {
         return preferredSize;
     }
 
-    public void displayContextForWords (ContextsMap contextsMap) {
+    public void displayContextForWords(Query query, ContextsMap contextsMap) {
         ROOT.removeAllChildren();
-        for (String word : contextsMap.getOriginalWords()) {
+        for (String word : query.getTerms()) {
             DefaultMutableTreeNode wordNode =
                     nodeWithContext (word, contextsMap.getContextScoresForWord(word));
             ROOT.add(wordNode);
