@@ -42,4 +42,8 @@ public class WordRelation implements Serializable, Comparable<WordRelation> {
     public int compareTo(WordRelation context) {
         return -Double.compare(score, context.score);
     }
+    
+    public String toString(){
+    	return firstWord + ", " + secondWord + " ~ " + score;
+    }
 }

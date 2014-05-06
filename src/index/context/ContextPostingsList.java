@@ -11,7 +11,7 @@ import common.Util;
 public class ContextPostingsList implements Serializable, Iterable<WordRelation> {
 
     private final String originalWord;
-    private Map<String, WordRelation> entries = new HashMap<String, WordRelation>(100);
+    private Map<String, WordRelation> entries = new HashMap<String, WordRelation>();
 
     ContextPostingsList(String originalWord){
         this.originalWord = originalWord;
@@ -41,5 +41,9 @@ public class ContextPostingsList implements Serializable, Iterable<WordRelation>
     
     public void sort(){
     	entries = Util.getMapSortedByValuesDescending(entries);
+    }
+    
+    public String toString(){
+    	return originalWord + " -> " + entries;
     }
 }

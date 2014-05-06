@@ -1,7 +1,6 @@
 package search;
 
 
-import index.DocumentMetaData;
 import index.Index;
 import index.PostingsEntry;
 import index.PostingsList;

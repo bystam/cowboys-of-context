@@ -11,7 +11,7 @@ import java.util.Set;
  */
 public class ContextsMap {
 
-    private final Map<String, ContextPostingsList> context = new HashMap<>(100);
+    private final Map<String, ContextPostingsList> context = new HashMap<>();
 
     public void putContextScoresForWord (String word, ContextPostingsList wordRelations) {
         context.put(word, wordRelations);

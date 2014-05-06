@@ -18,13 +18,14 @@ public abstract class AbstractIndexer {
 	}
 
     private void indexDirectoryHelper(File path) {
-        System.out.println("Indexing :"+path);
+        System.out.println("\nIndexing :"+path);
         if (!path.canRead())
             throw new IllegalAccessError("Can't read: "+path);
         if (!path.isDirectory())
             throw new IllegalArgumentException(path+" is not a directory");
         for (File file : path.listFiles()) {
-			System.out.println("index file: "+file);
+        	System.out.print(".");
+			//System.out.println("index file: "+file);
             if (file.isDirectory()) {
                 indexDirectoryHelper(file);
             } else {
