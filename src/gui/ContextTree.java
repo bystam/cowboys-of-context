@@ -36,11 +36,8 @@ public class ContextTree extends JTree {
 
     public void displayContextForWords(Query query, ContextsMap contextsMap) {
         ROOT.removeAllChildren();
-        int childAmount = 0;
         for (String word : query.getTerms()) {
-            if (childAmount++ == DISPLAYED_RELATED_WORD_AMOUNT)
-                break;
-
+            System.out.println(childAmount);
             ContextPostingsList contextScoresForWord = contextsMap.getContextScoresForWord(word);
             if (contextScoresForWord == null)
                 continue;
@@ -59,7 +56,11 @@ public class ContextTree extends JTree {
 
     private DefaultMutableTreeNode nodeWithContext(String word, ContextPostingsList contextPostingsList) {
         DefaultMutableTreeNode wordNode = new DefaultMutableTreeNode (word);
+        int childAmount = 0;
         for (WordRelation wordRelation : contextPostingsList) {
+            if (childAmount++ == DISPLAYED_RELATED_WORD_AMOUNT)
+                break;
+            
             String synonym = wordRelation.getSecondWord();
             double score = wordRelation.getScore();
 
