@@ -17,7 +17,6 @@ import java.awt.*;
  * with a score.
  */
 public class ContextTree extends JTree {
-
     private static final int DISPLAYED_RELATED_WORD_AMOUNT = 5;
 
     private static final DefaultMutableTreeNode ROOT =
@@ -27,20 +26,9 @@ public class ContextTree extends JTree {
         super(ROOT);
     }
 
-    @Override
-    public Dimension getPreferredSize() {
-        Dimension preferredSize = super.getPreferredSize();
-        preferredSize.width = 300;
-        return preferredSize;
-    }
-
-    public void displayContextForWords(Query query, ContextsMap contextsMap) {
+    public void displayContextForWords (Query query, ContextsMap contextsMap) {
         ROOT.removeAllChildren();
-        int childAmount = 0;
         for (String word : query.getTerms()) {
-            if (childAmount++ == DISPLAYED_RELATED_WORD_AMOUNT)
-                break;
-
             ContextPostingsList contextScoresForWord = contextsMap.getContextScoresForWord(word);
             if (contextScoresForWord == null)
                 continue;
@@ -53,13 +41,15 @@ public class ContextTree extends JTree {
 		model.reload(ROOT);
         displayAll();
         setRootVisible(false);
-        revalidate();
-        repaint();
     }
 
     private DefaultMutableTreeNode nodeWithContext(String word, ContextPostingsList contextPostingsList) {
         DefaultMutableTreeNode wordNode = new DefaultMutableTreeNode (word);
+        int childAmount = 0;
         for (WordRelation wordRelation : contextPostingsList) {
+            if (childAmount++ == DISPLAYED_RELATED_WORD_AMOUNT)
+                break;
+
             String synonym = wordRelation.getSecondWord();
             double score = wordRelation.getScore();
 
