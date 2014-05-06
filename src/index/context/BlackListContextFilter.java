@@ -17,6 +17,4 @@ public class BlackListContextFilter implements ContextFilter {
 		return !blacklist.contains(word);
 	}
 
-    @Override
-    public void update(double tf_idf) { }
 }
