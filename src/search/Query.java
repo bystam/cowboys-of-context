@@ -13,7 +13,7 @@ public class Query implements Iterable<Entry<String,Double>> {
 	private final Map<String, Double> weightedTerms = new HashMap<>();
 
     public Query (String queryString) {
-        queryString = queryString.trim();
+        queryString = queryString.trim().toLowerCase();
         List<String> terms = Arrays.asList(queryString.split(" "));
         for (String word : terms)
         	weightedTerms.put(word, DEFAULT_WEIGHT);

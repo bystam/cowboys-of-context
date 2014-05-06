@@ -29,7 +29,7 @@ public class WordContextIndexer extends AbstractIndexer implements ContextIndexe
     //ContextFilter to determine which words are relevant
     //Using a simple meancontextfilter TODO: Implement better contextfilter
     //ContextFilter context_filter = new MeanContextFiler(0.4);
-    ContextFilter context_filter = new Mean2ContextFilter(0.5, 0.01);
+    private final ContextFilter context_filter = new Mean2ContextFilter(0.5, 0.01);
 
 
     /**
@@ -168,8 +168,11 @@ public class WordContextIndexer extends AbstractIndexer implements ContextIndexe
 
     public void saveAllPostingsLists() {
     	System.out.println("saveAllPostingsLists() c_index.size == " + c_index.size());
+        int done = 0;
         for (ContextPostingsList postingsList : c_index.values()) {
             savePostingsListToDisk(postingsList);
+            if (done++ % 50 == 0)
+                System.out.printf("%d writes are done\n", done);
         }
     }
 
