@@ -22,6 +22,7 @@ public class SearchResults implements Iterable<Entry<Document, Double>>{
 	public SearchResults(Map<Document,Double> documents, ContextsMap contexts){
 		this.documents = Util.getMapSortedByValues(documents);
 		this.contexts = contexts;
+		this.contexts.sortContexts();
 	}
 	
 	public SearchResults(Map<Document,Double> documents){
