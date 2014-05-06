@@ -21,7 +21,8 @@ public class ContextSearchEngine extends RankedRetrievalSearchEngine {
     }
 
     @Override
-    public SearchResults search(Query query) {        
+    public SearchResults search(Query query) {
+        query = new Query(query);
         ContextsMap contexts = contextIndex.getContextsForWords(query.getTerms());
         query = expandQueryWithContext (query, contexts);
         SearchResults simpleResults = super.search(query);
