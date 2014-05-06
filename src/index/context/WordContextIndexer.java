@@ -13,14 +13,13 @@ import java.util.*;
  */
 public class WordContextIndexer extends AbstractIndexer implements ContextIndexer {
 
-    private static final int HORIZON = 15;
+    private static final int HORIZON = 5;
 
     private File savePath;
     private Index index;
     protected DirectoryContextIndex disk_index;
 
     private DocumentMetaData metaData;
-
 
     private Document current = null;
     private Map<String, Double> tf_idf_map = new HashMap<>(100);
@@ -72,6 +71,7 @@ public class WordContextIndexer extends AbstractIndexer implements ContextIndexe
         	prev.clear();
             tf_idf_map.clear();
             current = document;
+            //System.out.println(numDocumentsProcessed + " documents");
         }
 
         if(!tf_idf_map.containsKey(token)){
@@ -79,7 +79,6 @@ public class WordContextIndexer extends AbstractIndexer implements ContextIndexe
         }
 
         if(!context_filter.isValid(token, tf_idf_map.get(token))){
-        	System.out.println("NOT VALID: " + token); //TODO
             return;
         }
 
@@ -87,8 +86,6 @@ public class WordContextIndexer extends AbstractIndexer implements ContextIndexe
             c_index.put(token, new ContextPostingsList(token));
         }
 
-        ContextPostingsList t_map = c_index.get(token);
-        
         int i  = 0;
         for(String prevt : prev){
             if(prevt.equals(token)) continue;
@@ -96,8 +93,9 @@ public class WordContextIndexer extends AbstractIndexer implements ContextIndexe
             //Kind of sure contextWeight gets the right offset difference
             Double weight = contextWeight(tf_idf_map.get(token),  tf_idf_map.get(prevt), HORIZON, i, metaData.getDocumentLength(current));
 
-            t_map.addEntry(prevt, weight);
             c_index.get(prevt).addEntry(token, weight);
+            c_index.get(token).addEntry(prevt, weight);
+
             i++;
         }
         
@@ -133,7 +131,7 @@ public class WordContextIndexer extends AbstractIndexer implements ContextIndexe
 
 
     private void savePostingsListToDisk(ContextPostingsList postingsList) {
-    	
+    	System.out.print("*");   
         File saveFileName = DirectoryIndex.wordToFileName(postingsList.getOriginalWord(), savePath.toPath());
         saveFileName.getParentFile().mkdirs();
         boolean exists = saveFileName.exists();
@@ -143,6 +141,12 @@ public class WordContextIndexer extends AbstractIndexer implements ContextIndexe
          */
         if(exists){
             ContextPostingsList pl = disk_index.readPostingsList(postingsList.getOriginalWord());
+            if(pl == null){
+            	throw new NullPointerException("origWord: " + postingsList.getOriginalWord()
+            			+ "\nsaveFileName: " + saveFileName 
+            			+ "\npl: " + pl 
+            			+ "\n" + disk_index.getContextForWord(postingsList.getOriginalWord()));
+            }
             for(WordRelation wr : postingsList){
                 WordRelation wr2 = pl.get(wr.getSecondWord());
                 if(wr2 != null) {
@@ -157,8 +161,7 @@ public class WordContextIndexer extends AbstractIndexer implements ContextIndexe
             out.writeUTF(postingsList.getOriginalWord());
 
             for (WordRelation entry : postingsList) {
-            	//System.out.println(postingsList.getOriginalWord() + " - " + entry.getSecondWord() + " ~ " + entry.getScore()); //TODO
-                savePostingsEntry(out, entry);
+            	savePostingsEntry(out, entry);
             }
         } catch (IOException e) {
             e.printStackTrace(System.err);
@@ -175,7 +178,7 @@ public class WordContextIndexer extends AbstractIndexer implements ContextIndexe
         int done = 0;
         for (ContextPostingsList postingsList : c_index.values()) {
             savePostingsListToDisk(postingsList);
-            if (done++ % 50 == 0)
+            if (done++ % 10000 == 0)
                 System.out.printf("%d writes are done\n", done);
         }
     }
