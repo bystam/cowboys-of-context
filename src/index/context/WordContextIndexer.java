@@ -22,7 +22,6 @@ public class WordContextIndexer extends AbstractIndexer implements ContextIndexe
     private DocumentMetaData metaData;
 
 
-    private int horizon_p = 0;
     private Document current = null;
     private Map<String, Double> tf_idf_map = new HashMap<>(100);
     private Queue<String> prev = new LinkedList<String>();
@@ -69,7 +68,7 @@ public class WordContextIndexer extends AbstractIndexer implements ContextIndexe
 
     @Override public void processToken(String token, int offset, Document document) {
     	System.out.println("processtoken " + token);
-        if(!document.equals(current)){ //!equals?
+        if(!document.equals(current)){
         	System.out.println(document.getFilePath()); //TODO
         	prev.clear();
             	
