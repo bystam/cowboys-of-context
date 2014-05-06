@@ -33,6 +33,10 @@ public class SearchResults implements Iterable<Entry<Document, Double>>{
 	public Iterator<Entry<Document, Double>> iterator() {
 		return documents.entrySet().iterator();
 	}
+	
+	public boolean hasContextsMap(){
+		return contexts != null;
+	}
 
     public ContextsMap getContextsMap () {
     	if(contexts == null){

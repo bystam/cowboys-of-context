@@ -7,6 +7,8 @@ import java.util.Collection;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
+import com.sun.org.apache.bcel.internal.classfile.Field;
+
 /**
  * An implementation of a {@link ContextIndex} which uses a directory
  * containing serialized postings lists as its source.
@@ -64,9 +66,13 @@ public class DirectoryContextIndex implements ContextIndex {
 
 
     ContextPostingsList readPostingsList(String name){
-        File path = indexDirectory.resolve(name).toFile();
-        if (!path.canRead() || path.isDirectory())
-            return null;
+        File path = indexDirectory.resolve(name.charAt(0) + "/index_" + name + ".txt").toFile();
+        if (!path.canRead() || path.isDirectory()){
+        	System.out.println("readPostingsList()   cannot read " + path);//TODO
+        	System.out.println("file exists: " + path.exists());
+        	return null;
+        }
+            
         try (DataInputStream in = new DataInputStream(new BufferedInputStream(new FileInputStream(path)))) {
             ContextPostingsList postingsList = new ContextPostingsList(in.readUTF());
             while (in.available()>0) {
@@ -74,6 +80,7 @@ public class DirectoryContextIndex implements ContextIndex {
             }
             return postingsList;
         } catch (IOException e) {
+        	System.out.println("readPostingsList()   IOException " + e);//TODO
             return null;
         }
 

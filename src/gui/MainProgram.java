@@ -40,6 +40,7 @@ public class MainProgram {
 
     private static SearchEngine getContextSearchEngine(String[] args) {
         Index index = new DirectoryIndex(Paths.get (args[1]));
+        System.out.println("Creating context index");
         ContextIndex contextIndex = new DirectoryContextIndex(Paths.get(args[2]));
         return new ContextSearchEngine (index, contextIndex);
     }

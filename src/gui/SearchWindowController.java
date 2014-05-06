@@ -63,13 +63,23 @@ public class SearchWindowController {
         results.append("</ul></html>");
         resultsArea.setText(results.toString());
         resultsArea.setCaretPosition(0);
-        displayContext(null);
+        
+        if(searchResults.hasContextsMap()){
+        	displayContext(searchResults.getContextsMap());
+        	System.out.println("ContextsMap returned from search " + searchResults.getContextsMap().getOriginalWords());
+        }else{
+        	displayContext(null);
+        	System.out.println("No contextsMap returned from search");
+        }
+        
     }
 
     public void displayContext (ContextsMap contextsMap) {
-        // TODO dummy
-        contextsMap = dummyIndex.getContextsForWords(Arrays.asList("apa", "bil"));
+        if(contextsMap == null){ //TODO
+        	contextsMap = dummyIndex.getContextsForWords(Arrays.asList("apa", "bil"));
+        }
         contextTree.displayContextForWords(contextsMap);
+        //TODO Verkar inte uppdater grafiken "efter första contextMappen"
     }
 
     private void setupSearchListener() {
