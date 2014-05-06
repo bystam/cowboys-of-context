@@ -39,7 +39,7 @@ public class RankedRetrievalSearchEngine implements SearchEngine {
 				double numDocsContainingTerm = postingsList.getNumDocuments();
 				Document doc = postingsEntry.getDocument();
 				double docLength = metaData.getDocumentLength(doc);
-				double tfIdfScore = tfIdf(termFrequency, numDocsContainingTerm, docLength);
+				double tfIdfScore = postingsEntry.getTfIdf();
 				tfIdfScore *= weight;
 				Util.incrementMap(docScores, doc, tfIdfScore);
         	}
