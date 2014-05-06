@@ -12,7 +12,7 @@ import java.util.*;
  */
 public class WordContextIndexer extends AbstractIndexer implements ContextIndexer {
 
-    private static final int HORIZON = 15;
+    private static final int HORIZON = 3;
 
     private File savePath;
     private File sourcePath;
@@ -22,7 +22,6 @@ public class WordContextIndexer extends AbstractIndexer implements ContextIndexe
     private DocumentMetaData metaData;
 
 
-    private int horizon_p = 0;
     private Document current = null;
     private Map<String, Double> tf_idf_map = new HashMap<>(100);
     private Queue<String> prev = new LinkedList<String>();
@@ -68,7 +67,8 @@ public class WordContextIndexer extends AbstractIndexer implements ContextIndexe
 
 
     @Override public void processToken(String token, int offset, Document document) {
-        if(!document.equals(current)){ //!equals?
+    	System.out.println("processtoken " + token);
+        if(!document.equals(current)){
         	System.out.println(document.getFilePath()); //TODO
         	prev.clear();
             tf_idf_map.clear();
@@ -90,12 +90,9 @@ public class WordContextIndexer extends AbstractIndexer implements ContextIndexe
         }
 
         ContextPostingsList t_map = c_index.get(token);
-
         
         int i  = 0;
         for(String prevt : prev){
-            //String prevt = prev.get(i);
-		
             if(prevt.equals(token)) continue;
 
             //Kind of sure contextWeight gets the right offset difference
@@ -139,8 +136,6 @@ public class WordContextIndexer extends AbstractIndexer implements ContextIndexe
 
     private void savePostingsListToDisk(ContextPostingsList postingsList) {
     	
-    	System.out.println("savePostingsList " + postingsList.getOriginalWord()); //TODO
-    	
         File saveFileName = DirectoryIndex.wordToFileName(postingsList.getOriginalWord(), savePath.toPath());
         saveFileName.getParentFile().mkdirs();
         boolean exists = saveFileName.exists();
@@ -179,7 +174,6 @@ public class WordContextIndexer extends AbstractIndexer implements ContextIndexe
     public void saveAllPostingsLists() {
     	System.out.println("saveAllPostingsLists() c_index.size == " + c_index.size());
         for (ContextPostingsList postingsList : c_index.values()) {
-        	System.out.println("CtxPostingsList " + postingsList.getOriginalWord());
             savePostingsListToDisk(postingsList);
         }
     }
