@@ -20,7 +20,7 @@ public class Mean2ContextFilter implements ContextFilter {
     @Override
     public boolean isValid(String word, double tf_idf) {
         num_updates++;
-        mean_tf_idf = alpha*((mean_tf_idf+tf_idf)/num_updates - mean_tf_idf) + mean_tf_idf;
+        mean_tf_idf = alpha*((mean_tf_idf+tf_idf)/num_updates - mean_tf_idf) + (1-alpha)*mean_tf_idf;
         THRESH = mean_tf_idf*factor;
         return tf_idf > THRESH;
     }
