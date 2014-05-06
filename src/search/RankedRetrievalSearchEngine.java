@@ -20,11 +20,9 @@ import common.Util;
 public class RankedRetrievalSearchEngine implements SearchEngine {
 
     private final Index index;
-    private final DocumentMetaData metaData;
 
     public RankedRetrievalSearchEngine (Index index) {
         this.index = index;
-        metaData = index.getDocumentMetaData();
     }
 
     @Override
@@ -35,10 +33,7 @@ public class RankedRetrievalSearchEngine implements SearchEngine {
         	double weight = weightedTerm.getValue();
         	PostingsList postingsList = index.getPostingsList(term);
         	for(PostingsEntry postingsEntry : postingsList){
-        		double termFrequency = postingsEntry.getOffsets().size();
-				double numDocsContainingTerm = postingsList.getNumDocuments();
 				Document doc = postingsEntry.getDocument();
-				double docLength = metaData.getDocumentLength(doc);
 				double tfIdfScore = postingsEntry.getTfIdf();
 				tfIdfScore *= weight;
 				Util.incrementMap(docScores, doc, tfIdfScore);
@@ -46,12 +41,6 @@ public class RankedRetrievalSearchEngine implements SearchEngine {
         }
         LinkedHashMap<Document,Double> sortedDocScores = Util.getMapSortedByValues(docScores);
         return new SearchResults(sortedDocScores);
-    }
-    
-    private double tfIdf(double termFrequency, double numDocsContainingTerm, double docLength){
-    	int numDocs = metaData.getNumDocuments();
-    	double invDocFrequency = Math.log10(numDocs / numDocsContainingTerm);
-		return termFrequency * invDocFrequency / docLength; //Divide by length later if efficiency is important.
     }
 
 }

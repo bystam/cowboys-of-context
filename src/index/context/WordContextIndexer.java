@@ -12,10 +12,9 @@ import java.util.*;
  */
 public class WordContextIndexer extends AbstractIndexer implements ContextIndexer {
 
-    private static final int HORIZON = 3;
+    private static final int HORIZON = 30;
 
     private File savePath;
-    private File sourcePath;
     private Index index;
     protected DirectoryContextIndex disk_index;
 
@@ -39,7 +38,6 @@ public class WordContextIndexer extends AbstractIndexer implements ContextIndexe
     public void buildIndex(Index index, File savePath, File sourcePath){
         this.savePath = savePath;
         savePath.mkdirs();
-        this.sourcePath = sourcePath;
         this.index = index;
         this.metaData = index.getDocumentMetaData();
 
@@ -157,6 +155,7 @@ public class WordContextIndexer extends AbstractIndexer implements ContextIndexe
             out.writeUTF(postingsList.getOriginalWord());
 
             for (WordRelation entry : postingsList) {
+            	//System.out.println(postingsList.getOriginalWord() + " - " + entry.getSecondWord() + " ~ " + entry.getScore()); //TODO
                 savePostingsEntry(out, entry);
             }
         } catch (IOException e) {
