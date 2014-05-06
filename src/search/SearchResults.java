@@ -1,11 +1,14 @@
 package search;
 
-import common.Document;
 import index.context.ContextsMap;
 
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.TreeMap;
+
+import common.Document;
+import common.Util;
 
 /**
  * This is a class representing the results of running a query
@@ -17,7 +20,7 @@ public class SearchResults implements Iterable<Entry<Document, Double>>{
 	private final ContextsMap contexts;
 	
 	public SearchResults(Map<Document,Double> documents, ContextsMap contexts){
-		this.documents = documents;
+		this.documents = Util.getMapSortedByValues(documents);
 		this.contexts = contexts;
 	}
 	

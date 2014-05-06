@@ -34,7 +34,7 @@ public class DirectoryIndex implements Index {
 	public DirectoryIndex(Path indexDirectory) {
 		this.directory = indexDirectory;
 		if (!Files.isReadable (indexDirectory) || !Files.isDirectory(indexDirectory)) {
-			throw new IllegalArgumentException("Can't read the word index or it's not directory.");
+			throw new IllegalArgumentException("Can't read the word index or it's not directory: " + indexDirectory);
 		}
 		documentMetaData = readDocumentMetaDataFromDisk();
 	}
