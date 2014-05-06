@@ -37,7 +37,6 @@ public class ContextTree extends JTree {
     public void displayContextForWords(Query query, ContextsMap contextsMap) {
         ROOT.removeAllChildren();
         for (String word : query.getTerms()) {
-            System.out.println(childAmount);
             ContextPostingsList contextScoresForWord = contextsMap.getContextScoresForWord(word);
             if (contextScoresForWord == null)
                 continue;
@@ -60,7 +59,7 @@ public class ContextTree extends JTree {
         for (WordRelation wordRelation : contextPostingsList) {
             if (childAmount++ == DISPLAYED_RELATED_WORD_AMOUNT)
                 break;
-            
+
             String synonym = wordRelation.getSecondWord();
             double score = wordRelation.getScore();
 
