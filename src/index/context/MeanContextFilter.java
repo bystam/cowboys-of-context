@@ -5,15 +5,13 @@ package index.context;
  */
 public class MeanContextFilter implements ContextFilter {
 
-    private double mean_tf_idf = 0.1;
-    private double THRESH;
-
-    MeanContextFilter(double p){
-        this.THRESH = p*mean_tf_idf;
-    }
-
+    private double sum_tf_idf = 0;
+    private int num_words_processed = 0;
+    
     @Override
     public boolean isValid(String word, double tf_idf) {
-        return tf_idf > THRESH;
+        num_words_processed ++;
+        sum_tf_idf += tf_idf;
+    	return tf_idf >= sum_tf_idf/(double)num_words_processed;
     }
 }
