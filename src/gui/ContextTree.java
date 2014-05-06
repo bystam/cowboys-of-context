@@ -18,6 +18,8 @@ import java.awt.*;
  */
 public class ContextTree extends JTree {
 
+    private static final int DISPLAYED_RELATED_WORD_AMOUNT = 5;
+
     private static final DefaultMutableTreeNode ROOT =
             new DefaultMutableTreeNode("ContextsMap");
 
@@ -34,7 +36,11 @@ public class ContextTree extends JTree {
 
     public void displayContextForWords(Query query, ContextsMap contextsMap) {
         ROOT.removeAllChildren();
+        int childAmount = 0;
         for (String word : query.getTerms()) {
+            if (childAmount++ == DISPLAYED_RELATED_WORD_AMOUNT)
+                break;
+
             DefaultMutableTreeNode wordNode =
                     nodeWithContext (word, contextsMap.getContextScoresForWord(word));
             ROOT.add(wordNode);
