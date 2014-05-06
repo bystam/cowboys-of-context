@@ -65,7 +65,7 @@ public class WordContextIndexer extends AbstractIndexer implements ContextIndexe
 
 
     @Override public void processToken(String token, int offset, Document document) {
-        if(document.equals(current)){
+        if(document.equals(current)){ //!equals?
             prev.clear();
             c_index.clear();
             tf_idf_map.clear();
