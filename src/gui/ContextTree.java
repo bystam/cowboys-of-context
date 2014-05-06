@@ -4,6 +4,7 @@ package gui;
 import index.context.ContextPostingsList;
 import index.context.ContextsMap;
 import index.context.WordRelation;
+import search.Query;
 
 import javax.swing.*;
 import javax.swing.tree.DefaultMutableTreeNode;
@@ -16,6 +17,7 @@ import java.awt.*;
  * with a score.
  */
 public class ContextTree extends JTree {
+    private static final int DISPLAYED_RELATED_WORD_AMOUNT = 5;
 
     private static final DefaultMutableTreeNode ROOT =
             new DefaultMutableTreeNode("ContextsMap");
@@ -24,7 +26,7 @@ public class ContextTree extends JTree {
         super(ROOT);
     }
 
-    public void displayContextForWords (ContextsMap contextsMap) {
+    public void displayContextForWords (Query query, ContextsMap contextsMap) {
         ROOT.removeAllChildren();
         int childAmount = 0;
         for (String word : query.getTerms()) {
