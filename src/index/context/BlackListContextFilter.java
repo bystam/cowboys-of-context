@@ -1,13 +1,7 @@
 package index.context;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.HashSet;
-import java.util.Scanner;
 import java.util.Set;
 
 public class BlackListContextFilter implements ContextFilter {
