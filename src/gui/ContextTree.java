@@ -7,6 +7,7 @@ import index.context.WordRelation;
 
 import javax.swing.*;
 import javax.swing.tree.DefaultMutableTreeNode;
+import javax.swing.tree.DefaultTreeModel;
 import java.awt.*;
 
 /**
@@ -38,8 +39,11 @@ public class ContextTree extends JTree {
             ROOT.add(wordNode);
         }
 
+		DefaultTreeModel model = (DefaultTreeModel)getModel();
+		model.reload(ROOT);
         displayAll();
         setRootVisible(false);
+
     }
 
     private DefaultMutableTreeNode nodeWithContext(String word, ContextPostingsList contextPostingsList) {
