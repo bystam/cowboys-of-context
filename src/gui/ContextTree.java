@@ -43,7 +43,7 @@ public class ContextTree extends JTree {
 		model.reload(ROOT);
         displayAll();
         setRootVisible(false);
-
+        revalidate();
     }
 
     private DefaultMutableTreeNode nodeWithContext(String word, ContextPostingsList contextPostingsList) {

@@ -11,7 +11,6 @@ import javafx.scene.web.WebView;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionListener;
 import java.net.MalformedURLException;
 import java.net.URL;
 
@@ -25,9 +24,6 @@ public class SimpleSwingBrowser extends JFrame {
     private final JPanel panel = new JPanel(new BorderLayout());
     private final JLabel lblStatus = new JLabel();
 
-
-    private final JButton btnGo = new JButton("Go");
-    private final JTextField txtURL = new JTextField();
     private final JProgressBar progressBar = new JProgressBar();
 
     public SimpleSwingBrowser() {
@@ -39,25 +35,14 @@ public class SimpleSwingBrowser extends JFrame {
     private void initComponents() {
         createScene();
 
-        ActionListener al = e -> loadURL(txtURL.getText());
-
-        btnGo.addActionListener(al);
-        txtURL.addActionListener(al);
-
         progressBar.setPreferredSize(new Dimension(150, 18));
         progressBar.setStringPainted(true);
-
-        JPanel topBar = new JPanel(new BorderLayout(5, 0));
-        topBar.setBorder(BorderFactory.createEmptyBorder(3, 5, 3, 5));
-        topBar.add(txtURL, BorderLayout.CENTER);
-        topBar.add(btnGo, BorderLayout.EAST);
 
         JPanel statusBar = new JPanel(new BorderLayout(5, 0));
         statusBar.setBorder(BorderFactory.createEmptyBorder(3, 5, 3, 5));
         statusBar.add(lblStatus, BorderLayout.CENTER);
         statusBar.add(progressBar, BorderLayout.EAST);
 
-        panel.add(topBar, BorderLayout.NORTH);
         panel.add(jfxPanel, BorderLayout.CENTER);
         panel.add(statusBar, BorderLayout.SOUTH);
 
@@ -84,12 +69,6 @@ public class SimpleSwingBrowser extends JFrame {
             engine.setOnStatusChanged(event -> {
                 SwingUtilities.invokeLater(() -> {
                     lblStatus.setText(event.getData());
-                });
-            });
-
-            engine.locationProperty().addListener((ov, oldValue, newValue) -> {
-                SwingUtilities.invokeLater(() -> {
-                    txtURL.setText(newValue);
                 });
             });
 
