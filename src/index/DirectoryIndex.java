@@ -53,8 +53,8 @@ public class DirectoryIndex implements Index {
 			}
 			System.out.println("Current word: "+word);
 			for (PostingsEntry entry : postingsList) {
-				System.out.printf("Document: %s Offsetcount: %s\n", entry.getDocument(), 
-								  entry.getOffsets().size());
+				System.out.printf("Document: %s Offsetcount: %s TfIdf: %f\n", entry.getDocument(), 
+								  entry.getOffsets().size(), entry.getTfIdf());
 			}
 			System.out.println("Index size: "+index.index.size());
 		}
@@ -93,6 +93,7 @@ public class DirectoryIndex implements Index {
 			while (in.available()>0) {
 				postingsList.insertPostingsEntry(readPostingsEntry(in));
 			}
+			calcTfIdf(postingsList);
 			return postingsList;
 		} catch (IOException e) {
 			return null;
@@ -108,6 +109,20 @@ public class DirectoryIndex implements Index {
 		}
 		return entry;
 	}
+
+	private void calcTfIdf(PostingsList postingsList) {
+		for (PostingsEntry entry : postingsList) {
+			int docLen = documentMetaData.getDocumentLength(entry.getDocument());
+			double score = tfIdf(entry.getOffsets().size(), postingsList.getNumDocuments(), docLen);
+			entry.setTfIdf(score);
+		}
+	}
+
+    private double tfIdf(double termFrequency, double numDocsContainingTerm, double docLength){
+    	int numDocs = documentMetaData.getNumDocuments();
+    	double invDocFrequency = Math.log10(numDocs / numDocsContainingTerm);
+		return termFrequency * invDocFrequency / docLength; //Divide by length later if efficiency is important.
+    }
 
 	private File wordToFileName(String word) {
 		return wordToFileName(word, directory);
