@@ -12,7 +12,7 @@ import java.util.*;
  */
 public class WordContextIndexer extends AbstractIndexer implements ContextIndexer {
 
-    private static final int HORIZON = 15;
+    private static final int HORIZON = 3;
 
     private File savePath;
     private File sourcePath;
@@ -68,10 +68,11 @@ public class WordContextIndexer extends AbstractIndexer implements ContextIndexe
 
 
     @Override public void processToken(String token, int offset, Document document) {
+    	System.out.println("processtoken " + token);
         if(!document.equals(current)){ //!equals?
         	System.out.println(document.getFilePath()); //TODO
         	prev.clear();
-            c_index.clear();
+            	
             tf_idf_map.clear();
             current = document;
         }
@@ -137,8 +138,6 @@ public class WordContextIndexer extends AbstractIndexer implements ContextIndexe
 
     private void savePostingsListToDisk(ContextPostingsList postingsList) {
     	
-    	System.out.println("savePostingsList " + postingsList.getOriginalWord()); //TODO
-    	
         File saveFileName = DirectoryIndex.wordToFileName(postingsList.getOriginalWord(), savePath.toPath());
         saveFileName.getParentFile().mkdirs();
         boolean exists = saveFileName.exists();
@@ -177,7 +176,6 @@ public class WordContextIndexer extends AbstractIndexer implements ContextIndexe
     public void saveAllPostingsLists() {
     	System.out.println("saveAllPostingsLists() c_index.size == " + c_index.size());
         for (ContextPostingsList postingsList : c_index.values()) {
-        	System.out.println("CtxPostingsList " + postingsList.getOriginalWord());
             savePostingsListToDisk(postingsList);
         }
     }

@@ -1,5 +1,7 @@
 package index.context;
 
+import index.DirectoryIndex;
+
 import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -66,7 +68,7 @@ public class DirectoryContextIndex implements ContextIndex {
 
 
     ContextPostingsList readPostingsList(String name){
-        File path = indexDirectory.resolve(name.charAt(0) + "/index_" + name + ".txt").toFile();
+        File path = DirectoryIndex.wordToFileName(name, indexDirectory);
         if (!path.canRead() || path.isDirectory()){
         	System.out.println("readPostingsList()   cannot read " + path);//TODO
         	System.out.println("file exists: " + path.exists());
