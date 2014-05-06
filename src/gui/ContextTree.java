@@ -27,7 +27,7 @@ public class ContextTree extends JTree {
     @Override
     public Dimension getPreferredSize() {
         Dimension preferredSize = super.getPreferredSize();
-        preferredSize.width = 200;
+        preferredSize.width = 300;
         return preferredSize;
     }
 
@@ -44,6 +44,7 @@ public class ContextTree extends JTree {
         displayAll();
         setRootVisible(false);
         revalidate();
+        repaint();
     }
 
     private DefaultMutableTreeNode nodeWithContext(String word, ContextPostingsList contextPostingsList) {
