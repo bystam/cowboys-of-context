@@ -41,8 +41,11 @@ public class ContextTree extends JTree {
             if (childAmount++ == DISPLAYED_RELATED_WORD_AMOUNT)
                 break;
 
+            ContextPostingsList contextScoresForWord = contextsMap.getContextScoresForWord(word);
+            if (contextScoresForWord == null)
+                continue;
             DefaultMutableTreeNode wordNode =
-                    nodeWithContext (word, contextsMap.getContextScoresForWord(word));
+                    nodeWithContext (word, contextScoresForWord);
             ROOT.add(wordNode);
         }
 
