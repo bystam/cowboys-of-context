@@ -7,8 +7,6 @@ import java.util.Collection;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-import com.sun.org.apache.bcel.internal.classfile.Field;
-
 /**
  * An implementation of a {@link ContextIndex} which uses a directory
  * containing serialized postings lists as its source.

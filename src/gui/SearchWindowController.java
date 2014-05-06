@@ -64,10 +64,10 @@ public class SearchWindowController {
         resultsArea.setText(results.toString());
         resultsArea.setCaretPosition(0);
         
-        if(searchResults.hasContextsMap()){
+        if (searchResults.hasContextsMap()) {
         	displayContext(searchResults.getContextsMap());
         	System.out.println("ContextsMap returned from search " + searchResults.getContextsMap().getOriginalWords());
-        }else{
+        } else {
         	displayContext(null);
         	System.out.println("No contextsMap returned from search");
         }
