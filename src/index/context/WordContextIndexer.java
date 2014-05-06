@@ -7,6 +7,8 @@ import java.io.*;
 import java.nio.file.Paths;
 import java.util.*;
 
+import com.sun.org.apache.xml.internal.security.c14n.implementations.Canonicalizer11_OmitComments;
+
 /**
  * Created by olivergafvert on 2014-04-29.
  */
@@ -27,9 +29,11 @@ public class WordContextIndexer extends AbstractIndexer implements ContextIndexe
     
     
     //ContextFilter to determine which words are relevant
-    //Using a simple meancontextfilter TODO: Implement better contextfilter
-    //ContextFilter context_filter = new MeanContextFiler(0.4);
-    private final ContextFilter context_filter = new Mean2ContextFilter(0.5, 0.01);
+    private final ContextFilter context_filter = new CompositeContextFilter(
+    		new Mean2ContextFilter(0.5, 0.01), 
+    		new BlackListContextFilter());
+    
+    //private final ContextFilter context_filter = new Mean2ContextFilter(0.5, 0.01);
 
 
     /**
@@ -76,6 +80,7 @@ public class WordContextIndexer extends AbstractIndexer implements ContextIndexe
         }
 
         if(!context_filter.isValid(token, tf_idf_map.get(token))){
+        	System.out.println("NOT VALID: " + token); //TODO
             return;
         }
 

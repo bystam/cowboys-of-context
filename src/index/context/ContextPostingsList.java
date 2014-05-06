@@ -40,6 +40,6 @@ public class ContextPostingsList implements Serializable, Iterable<WordRelation>
     }
     
     public void sort(){
-    	entries = Util.getMapSortedByValues(entries);
+    	entries = Util.getMapSortedByValuesDescending(entries);
     }
 }
