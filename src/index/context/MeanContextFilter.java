@@ -14,7 +14,4 @@ public class MeanContextFilter implements ContextFilter {
         sum_tf_idf += tf_idf;
     	return tf_idf >= sum_tf_idf/(double)num_words_processed;
     }
-
-    @Override
-    public void update(double tf_idf) { }
 }
