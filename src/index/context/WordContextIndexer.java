@@ -88,12 +88,9 @@ public class WordContextIndexer extends AbstractIndexer implements ContextIndexe
         }
 
         ContextPostingsList t_map = c_index.get(token);
-
         
         int i  = 0;
         for(String prevt : prev){
-            //String prevt = prev.get(i);
-		
             if(prevt.equals(token)) continue;
 
             //Kind of sure contextWeight gets the right offset difference
