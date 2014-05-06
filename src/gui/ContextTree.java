@@ -5,8 +5,6 @@ import index.context.ContextPostingsList;
 import index.context.ContextsMap;
 import index.context.WordRelation;
 
-import java.util.TreeSet;
-
 import javax.swing.*;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
@@ -26,16 +24,9 @@ public class ContextTree extends JTree {
         super(ROOT);
     }
 
-    @Override
-    public Dimension getPreferredSize() {
-        Dimension preferredSize = super.getPreferredSize();
-        preferredSize.width = 200;
-        return preferredSize;
-    }
-
     public void displayContextForWords (ContextsMap contextsMap) {
         ROOT.removeAllChildren();
-        for (String word : new TreeSet<String>(contextsMap.getOriginalWords())) {
+        for (String word : contextsMap.getOriginalWords()) {
             DefaultMutableTreeNode wordNode =
                     nodeWithContext (word, contextsMap.getContextScoresForWord(word));
             ROOT.add(wordNode);
@@ -45,7 +36,8 @@ public class ContextTree extends JTree {
 		model.reload(ROOT);
         displayAll();
         setRootVisible(false);
-        revalidate();
+		getParent().revalidate();
+
     }
 
     private DefaultMutableTreeNode nodeWithContext(String word, ContextPostingsList contextPostingsList) {

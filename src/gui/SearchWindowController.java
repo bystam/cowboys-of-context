@@ -40,11 +40,14 @@ public class SearchWindowController {
 
     public void displayFrame () {
         JFrame frame = new JFrame ();
-        frame.setLayout(new BorderLayout());
-        addQueryArea(frame);
-        addContextTree(frame);
+		JSplitPane splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, createQueryArea(), createContextTree());
+		splitPane.setDividerLocation(500);
+		frame.getContentPane().add(splitPane, BorderLayout.CENTER);
+        
+        //addContextTree(treePanel);
         setupSearchListener();
 
+		frame.setTitle("Context Expansion");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setPreferredSize(new Dimension(800, 600));
         frame.pack();
@@ -125,7 +128,7 @@ public class SearchWindowController {
         });
     }
 
-    private void addQueryArea(JFrame frame) {
+    private JComponent createQueryArea() {
         queryField = new JTextField();
         queryField.setBorder(BorderFactory.createTitledBorder("Query"));
 
@@ -139,16 +142,18 @@ public class SearchWindowController {
         JPanel queryArea = new JPanel(new BorderLayout());
         queryArea.add(queryField, BorderLayout.NORTH);
         queryArea.add(resultsScrollPane, BorderLayout.CENTER);
-        frame.getContentPane().add(queryArea, BorderLayout.CENTER);
+		return queryArea;
+        //frame.add(queryArea, BorderLayout.CENTER);
     }
 
-    private void addContextTree(JFrame frame) {
+    private JComponent createContextTree() {
         contextTree = new ContextTree();
         JScrollPane contextArea = new JScrollPane(contextTree);
-        contextArea.setPreferredSize(contextTree.getPreferredSize());
+        //contextArea.setPreferredSize(contextTree.getPreferredSize());
 
         contextArea.setBorder(BorderFactory.createTitledBorder("ContextsMap"));
-        frame.getContentPane().add(contextArea, BorderLayout.EAST);
+		return contextArea;
+        //frame.add(contextArea, BorderLayout.CENTER);
     }
 
     private class SearchWorker extends SwingWorker<SearchResults, Void> {
