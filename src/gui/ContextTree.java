@@ -26,9 +26,16 @@ public class ContextTree extends JTree {
 
     public void displayContextForWords (ContextsMap contextsMap) {
         ROOT.removeAllChildren();
-        for (String word : contextsMap.getOriginalWords()) {
+        int childAmount = 0;
+        for (String word : query.getTerms()) {
+            if (childAmount++ == DISPLAYED_RELATED_WORD_AMOUNT)
+                break;
+
+            ContextPostingsList contextScoresForWord = contextsMap.getContextScoresForWord(word);
+            if (contextScoresForWord == null)
+                continue;
             DefaultMutableTreeNode wordNode =
-                    nodeWithContext (word, contextsMap.getContextScoresForWord(word));
+                    nodeWithContext (word, contextScoresForWord);
             ROOT.add(wordNode);
         }
 
@@ -36,8 +43,6 @@ public class ContextTree extends JTree {
 		model.reload(ROOT);
         displayAll();
         setRootVisible(false);
-		getParent().revalidate();
-
     }
 
     private DefaultMutableTreeNode nodeWithContext(String word, ContextPostingsList contextPostingsList) {
