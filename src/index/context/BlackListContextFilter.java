@@ -16,4 +16,5 @@ public class BlackListContextFilter implements ContextFilter {
 	public boolean isValid(String word, double tf_idf){
 		return !blacklist.contains(word);
 	}
+
 }
