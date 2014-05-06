@@ -3,7 +3,7 @@ package index.context;
 /**
  * Created by olivergafvert on 2014-05-04.
  */
-public class MeanContextFiler implements ContextFilter {
+public class Mean2ContextFilter implements ContextFilter {
 
     private double mean_tf_idf = 0;
     private int num_updates = 0; //number of tf-idf scores used in mean prediction
