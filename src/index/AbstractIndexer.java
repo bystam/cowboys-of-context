@@ -39,7 +39,6 @@ public abstract class AbstractIndexer {
      * @param index the index which all words' occureces will be added to.
      */
     public void indexFile(File path) {
-		System.out.println("index file");
         if (!path.canRead())
             throw new IllegalAccessError("Can't read: "+path);
         Document document = new Document(root.relativize(path.toPath()).toString());

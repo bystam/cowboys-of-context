@@ -2,6 +2,8 @@ package index.context;
 
 import java.io.Serializable;
 import java.util.*;
+import common.Util;
+
 
 /**
  * Created by olivergafvert on 2014-04-29.
@@ -35,5 +37,9 @@ public class ContextPostingsList implements Serializable, Iterable<WordRelation>
     @Override
     public Iterator<WordRelation> iterator() {
         return entries.values().iterator();
+    }
+    
+    public void sort(){
+    	entries = Util.getMapSortedByValues(entries);
     }
 }

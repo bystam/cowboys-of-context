@@ -12,7 +12,7 @@ import java.util.*;
  */
 public class WordContextIndexer extends AbstractIndexer implements ContextIndexer {
 
-    private static final int HORIZON = 30;
+    private static final int HORIZON = 15;
 
     private File savePath;
     private Index index;
@@ -29,7 +29,7 @@ public class WordContextIndexer extends AbstractIndexer implements ContextIndexe
     //ContextFilter to determine which words are relevant
     //Using a simple meancontextfilter TODO: Implement better contextfilter
     //ContextFilter context_filter = new MeanContextFiler(0.4);
-    ContextFilter context_filter = new Mean2ContextFilter(0.3, 0.01);
+    ContextFilter context_filter = new Mean2ContextFilter(0.5, 0.01);
 
 
     /**
@@ -65,9 +65,7 @@ public class WordContextIndexer extends AbstractIndexer implements ContextIndexe
 
 
     @Override public void processToken(String token, int offset, Document document) {
-    	System.out.println("processtoken " + token);
         if(!document.equals(current)){
-        	System.out.println(document.getFilePath()); //TODO
         	prev.clear();
             tf_idf_map.clear();
             current = document;
