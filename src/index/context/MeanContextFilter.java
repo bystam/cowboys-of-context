@@ -3,12 +3,12 @@ package index.context;
 /**
  * Created by olivergafvert on 2014-05-04.
  */
-public class MeanContextFiler implements ContextFilter {
+public class MeanContextFilter implements ContextFilter {
 
     private double mean_tf_idf = 0.1;
     private double THRESH;
 
-    MeanContextFiler(double p){
+    MeanContextFilter(double p){
         this.THRESH = p*mean_tf_idf;
     }
 
