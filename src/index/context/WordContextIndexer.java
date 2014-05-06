@@ -7,7 +7,6 @@ import java.io.*;
 import java.nio.file.Paths;
 import java.util.*;
 
-import com.sun.org.apache.xml.internal.security.c14n.implementations.Canonicalizer11_OmitComments;
 
 /**
  * Created by olivergafvert on 2014-04-29.
