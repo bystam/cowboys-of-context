@@ -20,4 +20,6 @@ public interface ContextFilter {
      * @return <code>true</code> if the word should be included, and <code>false</code> if not
      */
     boolean isValid(String word, double tf_idf);
+
+    public void update(double tf_idf);
 }

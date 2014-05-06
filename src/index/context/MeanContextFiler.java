@@ -5,11 +5,21 @@ package index.context;
  */
 public class MeanContextFiler implements ContextFilter {
 
-    private double mean_tf_idf = 0.1;
+    private double mean_tf_idf = 0;
+    private int num_updates = 0; //number of tf-idf scores used in mean prediction
     private double THRESH;
+    private double factor; //percentage of mean that should be used as thresh
+    private double alpha; //momentum of mean value prediction
 
-    MeanContextFiler(double p){
-        this.THRESH = p*mean_tf_idf;
+    MeanContextFiler(double p, double alpha){
+        this.factor = p;
+        this.alpha = alpha;
+    }
+
+    public void update(double tf_idf){
+        num_updates++;
+        mean_tf_idf = alpha*((mean_tf_idf+tf_idf)/num_updates - mean_tf_idf) + mean_tf_idf;
+        THRESH = mean_tf_idf*factor;
     }
 
     @Override

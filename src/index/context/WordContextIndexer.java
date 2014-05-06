@@ -31,7 +31,7 @@ public class WordContextIndexer extends AbstractIndexer implements ContextIndexe
     //ContextFilter to determine which words are relevant
     //Using a simple meancontextfilter TODO: Implement better contextfilter
     //ContextFilter context_filter = new MeanContextFiler(0.4);
-    ContextFilter context_filter = new BlackListContextFilter();
+    ContextFilter context_filter = new MeanContextFiler(0.3, 0.01);
 
 
     /**
@@ -71,7 +71,6 @@ public class WordContextIndexer extends AbstractIndexer implements ContextIndexe
         if(!document.equals(current)){ //!equals?
         	System.out.println(document.getFilePath()); //TODO
         	prev.clear();
-            c_index.clear();
             tf_idf_map.clear();
             current = document;
         }
@@ -79,6 +78,9 @@ public class WordContextIndexer extends AbstractIndexer implements ContextIndexe
         if(!tf_idf_map.containsKey(token)){
             tf_idf_map.put(token, getTfIdf(token, current));
         }
+
+        context_filter.update(tf_idf_map.get(token));
+
         if(!context_filter.isValid(token, tf_idf_map.get(token))){
             return;
         }
