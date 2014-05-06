@@ -61,6 +61,8 @@ sources.txt
 
 # index data
 svwiki/
+svwiki_links/
 
 # indexing
 /index/
+/bin

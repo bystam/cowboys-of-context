@@ -17,16 +17,16 @@ public class MainProgram {
 
     public static void main(String[] args) {
         SearchEngine searchEngine;
-        if (args.length == 0) {
+        if (args.length < 2) {
             usage();
             return;
-        } else if (args.length == 1) {
+        } else if (args.length == 2) {
             searchEngine = getRankedRetrievalSearchEngine (args);
         } else {
             searchEngine = getContextSearchEngine (args);
         }
 
-        TitleIndex titleIndex = new TitleIndex(new File("./index/articleTitles.txt"));
+        TitleIndex titleIndex = new TitleIndex(new File(args[0] + "/articleTitles.txt"));
         SearchWindowController searchWindowController =
                 new SearchWindowController(searchEngine, titleIndex);
 
@@ -34,18 +34,18 @@ public class MainProgram {
     }
 
     private static SearchEngine getRankedRetrievalSearchEngine(String[] args) {
-        Index index = new DirectoryIndex(Paths.get (args[0]));
+        Index index = new DirectoryIndex(Paths.get (args[1]));
         return new RankedRetrievalSearchEngine (index);
     }
 
     private static SearchEngine getContextSearchEngine(String[] args) {
-        Index index = new DirectoryIndex(Paths.get (args[0]));
-        ContextIndex contextIndex = new DirectoryContextIndex(Paths.get(args[1]));
+        Index index = new DirectoryIndex(Paths.get (args[1]));
+        ContextIndex contextIndex = new DirectoryContextIndex(Paths.get(args[2]));
         return new ContextSearchEngine (index, contextIndex);
     }
 
 
     private static void usage() {
-        System.out.println("Usage: java gui.MainProgram index-dir [context-index-dir]");
+        System.out.println("Usage: java gui.MainProgram articletitles-dir index-dir [context-index-dir]");
     }
 }
