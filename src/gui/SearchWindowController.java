@@ -12,6 +12,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
+import java.awt.event.WindowEvent;
 import java.util.Map;
 import java.util.concurrent.ExecutionException;
 
@@ -30,6 +31,7 @@ public class SearchWindowController {
     private JTextField queryField;
     private JPanel resultsArea;
     private ContextTree contextTree;
+	private JMenuBar menuBar;
 
     public SearchWindowController(SearchEngine searchEngine, TitleIndex titleIndex) {
         this.searchEngine = searchEngine;
@@ -42,9 +44,8 @@ public class SearchWindowController {
 		splitPane.setDividerLocation(500);
 		frame.getContentPane().add(splitPane, BorderLayout.CENTER);
         
-        //addContextTree(treePanel);
         setupSearchListener();
-
+		createMenuBar(frame);
 		frame.setTitle("Context Expansion");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setPreferredSize(new Dimension(800, 600));
@@ -127,18 +128,28 @@ public class SearchWindowController {
         queryArea.add(queryField, BorderLayout.NORTH);
         queryArea.add(resultsScrollPane, BorderLayout.CENTER);
 		return queryArea;
-        //frame.add(queryArea, BorderLayout.CENTER);
     }
 
     private JComponent createContextTree() {
         contextTree = new ContextTree();
         JScrollPane contextArea = new JScrollPane(contextTree);
-        //contextArea.setPreferredSize(contextTree.getPreferredSize());
-
         contextArea.setBorder(BorderFactory.createTitledBorder("ContextsMap"));
 		return contextArea;
-        //frame.add(contextArea, BorderLayout.CENTER);
     }
+
+	private void createMenuBar(JFrame window) {
+		menuBar = new JMenuBar();
+		JMenu file = new JMenu("File");
+		file.add(new JMenuItem(new AbstractAction("Exit") {
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					window.dispatchEvent(new WindowEvent(window, WindowEvent.WINDOW_CLOSING));
+				}
+			}));
+		menuBar.add(file);
+		window.setJMenuBar(menuBar);
+	}
+	
 
     private class SearchWorker extends SwingWorker<SearchResults, Void> {
 
