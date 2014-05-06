@@ -14,6 +14,8 @@ import index.context.WordRelation;
 public class ContextSearchEngine extends RankedRetrievalSearchEngine {
 
     private final ContextIndex contextIndex;
+    
+    private final static int MAX_NUM_EXPANSIONS_PER_WORD = 5; 
 
     public ContextSearchEngine (Index index, ContextIndex contextIndex) {
         super (index);
@@ -31,8 +33,13 @@ public class ContextSearchEngine extends RankedRetrievalSearchEngine {
 
     private Query expandQueryWithContext(Query query, ContextsMap contextsMap) {
     	for(String term : contextsMap.getOriginalWords()){
+    		int expansion = 0;
     		for(WordRelation relation : contextsMap.getContextScoresForWord(term)){
     			query.addOrIncrementTermWeight(relation.getSecondWord(), relation.getScore());
+    			expansion ++;
+    			if(expansion > MAX_NUM_EXPANSIONS_PER_WORD){
+    				break;
+    			}
     		}
     	}
     	return query;
