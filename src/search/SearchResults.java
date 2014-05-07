@@ -1,6 +1,7 @@
 package search;
 
 import common.Document;
+import common.Util;
 import index.context.ContextsMap;
 
 import java.util.Iterator;
@@ -17,8 +18,10 @@ public class SearchResults implements Iterable<Entry<Document, Double>>{
 	private final ContextsMap contexts;
 	
 	public SearchResults(Map<Document,Double> documents, ContextsMap contexts){
-		this.documents = documents;
+		this.documents = Util.getMapSortedByValues(documents);
 		this.contexts = contexts;
+        if (contexts != null)
+		    this.contexts.sortContexts();
 	}
 	
 	public SearchResults(Map<Document,Double> documents){

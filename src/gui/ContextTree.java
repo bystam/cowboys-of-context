@@ -4,6 +4,7 @@ package gui;
 import index.context.ContextPostingsList;
 import index.context.ContextsMap;
 import index.context.WordRelation;
+import search.Query;
 
 import javax.swing.*;
 import javax.swing.tree.DefaultMutableTreeNode;
@@ -16,6 +17,7 @@ import java.awt.*;
  * with a score.
  */
 public class ContextTree extends JTree {
+    private static final int DISPLAYED_RELATED_WORD_AMOUNT = 5;
 
     private static final DefaultMutableTreeNode ROOT =
             new DefaultMutableTreeNode("ContextsMap");
@@ -24,18 +26,14 @@ public class ContextTree extends JTree {
         super(ROOT);
     }
 
-    @Override
-    public Dimension getPreferredSize() {
-        Dimension preferredSize = super.getPreferredSize();
-        preferredSize.width = 200;
-        return preferredSize;
-    }
-
-    public void displayContextForWords (ContextsMap contextsMap) {
+    public void displayContextForWords (Query query, ContextsMap contextsMap) {
         ROOT.removeAllChildren();
-        for (String word : contextsMap.getOriginalWords()) {
+        for (String word : query.getTerms()) {
+            ContextPostingsList contextScoresForWord = contextsMap.getContextScoresForWord(word);
+            if (contextScoresForWord == null)
+                continue;
             DefaultMutableTreeNode wordNode =
-                    nodeWithContext (word, contextsMap.getContextScoresForWord(word));
+                    nodeWithContext (word, contextScoresForWord);
             ROOT.add(wordNode);
         }
 
@@ -43,12 +41,15 @@ public class ContextTree extends JTree {
 		model.reload(ROOT);
         displayAll();
         setRootVisible(false);
-
     }
 
     private DefaultMutableTreeNode nodeWithContext(String word, ContextPostingsList contextPostingsList) {
         DefaultMutableTreeNode wordNode = new DefaultMutableTreeNode (word);
+        int childAmount = 0;
         for (WordRelation wordRelation : contextPostingsList) {
+            if (childAmount++ == DISPLAYED_RELATED_WORD_AMOUNT)
+                break;
+
             String synonym = wordRelation.getSecondWord();
             double score = wordRelation.getScore();
 

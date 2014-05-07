@@ -80,7 +80,9 @@ public class DirectoryContextIndex implements ContextIndex {
             }
             return postingsList;
         } catch (IOException e) {
-        	System.out.println("readPostingsList()   IOException " + e);//TODO
+        	System.out.println("readPostingsList(" + name + ")   IOException " + e);//TODO
+        	e.printStackTrace();
+        	
             return null;
         }
 

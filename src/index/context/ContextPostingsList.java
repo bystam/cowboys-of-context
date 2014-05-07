@@ -2,6 +2,8 @@ package index.context;
 
 import java.io.Serializable;
 import java.util.*;
+import common.Util;
+
 
 /**
  * Created by olivergafvert on 2014-04-29.
@@ -9,7 +11,7 @@ import java.util.*;
 public class ContextPostingsList implements Serializable, Iterable<WordRelation> {
 
     private final String originalWord;
-    private Map<String, WordRelation> entries = new HashMap<String, WordRelation>(100);
+    private Map<String, WordRelation> entries = new HashMap<String, WordRelation>();
 
     ContextPostingsList(String originalWord){
         this.originalWord = originalWord;
@@ -35,5 +37,13 @@ public class ContextPostingsList implements Serializable, Iterable<WordRelation>
     @Override
     public Iterator<WordRelation> iterator() {
         return entries.values().iterator();
+    }
+    
+    public void sort(){
+    	entries = Util.getMapSortedByValuesDescending(entries);
+    }
+    
+    public String toString(){
+    	return originalWord + " -> " + entries;
     }
 }

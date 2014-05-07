@@ -65,6 +65,8 @@ public class WordIndexer extends AbstractIndexer {
 		if (offset==0 && lastDoc != null) {
 			docMetaData.setDocumentLength(lastDoc, docLength);
 			docMetaData.setDocumentCount(docMetaData.getNumDocuments()+1);
+			//System.out.println(docMetaData.getNumDocuments() + " documents");
+			System.out.print(".");
 		}
 		docLength = offset;
 		lastDoc = document;
