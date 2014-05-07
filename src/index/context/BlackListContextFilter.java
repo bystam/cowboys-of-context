@@ -120,7 +120,11 @@ public class BlackListContextFilter implements ContextFilter {
 				"vill", 
 				"väl", 
 				"även", 
-				"över" 
+				"över",
+				"quot",
+				"ref",
+				"gt", // TODO not sure
+				"lt" //TODO not sure
 		}));
 		
 	}
