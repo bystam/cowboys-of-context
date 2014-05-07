@@ -13,7 +13,7 @@ import java.util.*;
  */
 public class WordContextIndexer extends AbstractIndexer implements ContextIndexer {
 
-    private static final int HORIZON = 5;
+    private static final int HORIZON = 10;
 
     private File savePath;
     private Index index;
@@ -131,7 +131,7 @@ public class WordContextIndexer extends AbstractIndexer implements ContextIndexe
 
 
     private void savePostingsListToDisk(ContextPostingsList postingsList) {
-    	System.out.print("*");   
+//    	System.out.print("*");   
         File saveFileName = DirectoryIndex.wordToFileName(postingsList.getOriginalWord(), savePath.toPath());
         saveFileName.getParentFile().mkdirs();
         boolean exists = saveFileName.exists();
@@ -155,7 +155,7 @@ public class WordContextIndexer extends AbstractIndexer implements ContextIndexe
             }
             postingsList = pl;
         }
-        try (OutputStream outStream = new BufferedOutputStream(new FileOutputStream(saveFileName, true))) {
+        try (OutputStream outStream = new BufferedOutputStream(new FileOutputStream(saveFileName, false))) {
             DataOutputStream out = new DataOutputStream(outStream);
 
             out.writeUTF(postingsList.getOriginalWord());
