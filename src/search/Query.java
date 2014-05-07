@@ -1,9 +1,16 @@
 package search;
 
-import common.Util;
-
-import java.util.*;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Set;
+
+import common.Util;
 
 
 public class Query implements Iterable<Entry<String,Double>> {
@@ -26,6 +33,15 @@ public class Query implements Iterable<Entry<String,Double>> {
     public void addOrIncrementTermWeight(String term, double weight){
     	Util.incrementMap(weightedTerms, term, weight);
     }
+    
+    
+    public void ensureTermsHaveHighestWeights(Collection<String> terms){
+    	double maxWeight = Collections.max(weightedTerms.values());
+    	for(String term : terms){
+    		System.out.println("incr " + term + " with " + maxWeight); //TODO
+    		addOrIncrementTermWeight(term, maxWeight);
+    	}
+    }
 
     @Override
     public Iterator<Entry<String,Double>> iterator() {
@@ -34,5 +50,10 @@ public class Query implements Iterable<Entry<String,Double>> {
     
     public Set<String> getTerms(){
     	return weightedTerms.keySet();
+    }
+    
+    public String toString(){
+    	//TODO Might be very costly to call this toString() often
+    	return Util.getMapSortedByValues(weightedTerms).toString();
     }
 }
