@@ -47,4 +47,8 @@ public class SearchResults implements Iterable<Entry<Document, Double>>{
     	}
         return contexts;
     }
+    
+    public String toString(){
+    	return documents.toString();
+    }
 }

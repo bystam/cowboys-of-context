@@ -63,8 +63,6 @@ public class DirectoryContextIndex implements ContextIndex {
         return map;
     }
 
-
-
     ContextPostingsList readPostingsList(String name){
         File path = DirectoryIndex.wordToFileName(name, indexDirectory);
         if (!path.canRead() || path.isDirectory()){
@@ -72,7 +70,6 @@ public class DirectoryContextIndex implements ContextIndex {
         	System.out.println("file exists: " + path.exists());
         	return null;
         }
-            
         try (DataInputStream in = new DataInputStream(new BufferedInputStream(new FileInputStream(path)))) {
             ContextPostingsList postingsList = new ContextPostingsList(in.readUTF());
             while (in.available()>0) {
@@ -80,9 +77,8 @@ public class DirectoryContextIndex implements ContextIndex {
             }
             return postingsList;
         } catch (IOException e) {
-        	System.out.println("readPostingsList(" + name + ")   IOException " + e);//TODO
+        	System.out.println("readPostingsList(" + name + ")   IOException ");//TODO
         	e.printStackTrace();
-        	
             return null;
         }
 

@@ -8,6 +8,7 @@ public class TitleIndex {
 	private final Map<Integer, String> titles = new HashMap<>();
 	private final File titleFile;
 	private static boolean debug = false;
+	
 	public TitleIndex(File titleFile) {
 		if (!titleFile.canRead())
 			throw new IllegalArgumentException("Can't read index file: "+titleFile);
@@ -43,11 +44,21 @@ public class TitleIndex {
 	 */
 	public String getTitle(String docFile) {
 		//Extract the number from the filename
-		String idAsString = docFile.replaceAll("[\\D]" , "");
+		
+		String[] split = docFile.split("/");
+		String idAsString = split[split.length - 1];
+		if(idAsString.contains(".")){
+			idAsString = idAsString.split("\\.")[0];
+		}
+		
+		//String idAsString = docFile.replaceAll("[\\D]" , "");
+		
 		if (debug)
 			System.out.println(idAsString);
-		if (idAsString.isEmpty())
+		if (idAsString.isEmpty()){
 			return "";
+		}
+			
 		return getTitle(Integer.parseInt(idAsString));
 	}
 	
