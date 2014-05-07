@@ -12,7 +12,7 @@ import java.util.*;
  */
 public class WordContextIndexer extends AbstractIndexer implements ContextIndexer {
 
-    private static final int HORIZON = 3;
+    private static final int HORIZON = 30;
 
     private File savePath;
     private File sourcePath;
@@ -67,7 +67,7 @@ public class WordContextIndexer extends AbstractIndexer implements ContextIndexe
 
 
     @Override public void processToken(String token, int offset, Document document) {
-    	System.out.println("processtoken " + token);
+    	//System.out.println("processtoken " + token);
         if(!document.equals(current)){
         	System.out.println(document.getFilePath()); //TODO
         	prev.clear();

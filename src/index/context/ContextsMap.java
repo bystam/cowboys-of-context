@@ -15,6 +15,8 @@ public class ContextsMap {
     private final Map<String, ContextPostingsList> context = new HashMap<>(100);
     private Map<String, Double> queryExpansionCandidates = new HashMap<>(100);
 
+    private double mean = 0;
+
     public void putContextScoresForWord (String word, ContextPostingsList wordRelations) {
         context.put(word, wordRelations);
 
