@@ -15,6 +15,7 @@ public class WordContextIndexer extends AbstractIndexer implements ContextIndexe
 
     private static final int HORIZON = 10;
 
+
     private File savePath;
     private Index index;
     protected DirectoryContextIndex disk_index;

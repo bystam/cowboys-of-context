@@ -13,6 +13,8 @@ public class ContextsMap {
 
     private final Map<String, ContextPostingsList> context = new HashMap<>();
 
+    private double mean = 0;
+
     public void putContextScoresForWord (String word, ContextPostingsList wordRelations) {
         context.put(word, wordRelations);
     }
