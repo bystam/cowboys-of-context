@@ -65,7 +65,6 @@ public class SearchWindowController {
                 break;
             gbc.gridy++;
             final String name = titleIndex.getTitle(e.getKey().getFilePath());
-            System.out.println(e.getKey().getFilePath()+ " - " + name); //TODO
 
             JLabel nameLabel = new JLabel(name);
             JButton browserButton = new JButton(BROWSER_ICON_SMALL);
