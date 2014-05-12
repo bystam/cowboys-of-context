@@ -50,6 +50,14 @@ public class ContextPostingsList implements Serializable, Iterable<WordRelation>
     	return originalWord + " -> " + entries;
     }
 
+    public void normalizeScores () {
+        final double scoreSum = entries.values()
+                .stream()
+                .mapToDouble(WordRelation::getScore)
+                .sum();
+        entries.values().forEach((wr) -> wr.setScore(wr.getScore() / scoreSum));
+    }
+
     /**
      * Creates a new ContextPostingsList that only contains the top
      * ranked word relations of itself (sorted).

@@ -38,6 +38,10 @@ public class WordRelation implements Serializable, Comparable<WordRelation> {
         this.score += score;
     }
 
+    public void setScore (double score) {
+        this.score = score;
+    }
+
     @Override
     public int compareTo(WordRelation context) {
         return -Double.compare(score, context.score);

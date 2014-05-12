@@ -2,6 +2,7 @@ package search;
 
 import index.Index;
 import index.context.ContextIndex;
+import index.context.ContextPostingsList;
 import index.context.ContextsMap;
 import index.context.WordRelation;
 
@@ -33,10 +34,12 @@ public class ContextSearchEngine extends RankedRetrievalSearchEngine {
 
     private void expandQueryWithContext(Query query, ContextsMap contextsMap) {
     	for(String originalTerm : contextsMap.getOriginalWords()){
-    		for(WordRelation relation : contextsMap.getContextScoresForWord(originalTerm)){
+            ContextPostingsList contextPostingsList = contextsMap.getContextScoresForWord(originalTerm);
+            contextPostingsList.normalizeScores();
+            for(WordRelation relation : contextPostingsList){
     			query.addOrIncrementTermWeight(relation.getSecondWord(), relation.getScore());
     		}
     	}
-        query.ensureTermsHaveHighestWeights(contextsMap.getOriginalWords());
+        //query.ensureTermsHaveHighestWeights(contextsMap.getOriginalWords());
     }
 }

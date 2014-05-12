@@ -8,6 +8,7 @@ import search.Query;
 
 import javax.swing.*;
 import javax.swing.tree.DefaultMutableTreeNode;
+import javax.swing.tree.DefaultTreeCellRenderer;
 import javax.swing.tree.DefaultTreeModel;
 
 /**
@@ -17,11 +18,19 @@ import javax.swing.tree.DefaultTreeModel;
  */
 public class ContextTree extends JTree {
 
+    private static final Icon NODE_ICON = new ImageIcon("src/img/term.png");
+    private static final Icon LEAF_ICON = new ImageIcon("src/img/subterm.png");
+
     private static final DefaultMutableTreeNode ROOT =
-            new DefaultMutableTreeNode("ContextsMap");
+            new DefaultMutableTreeNode("Contexts");
 
     public ContextTree () {
         super(ROOT);
+        DefaultTreeCellRenderer renderer = new DefaultTreeCellRenderer();
+        renderer.setOpenIcon(NODE_ICON);
+        renderer.setClosedIcon(NODE_ICON);
+        renderer.setLeafIcon(LEAF_ICON);
+        setCellRenderer(renderer);
     }
 
     public void displayContextForWords (Query query, ContextsMap contextsMap) {
@@ -42,14 +51,13 @@ public class ContextTree extends JTree {
     }
 
     private DefaultMutableTreeNode nodeWithContext(String word, ContextPostingsList contextPostingsList) {
-        DefaultMutableTreeNode wordNode = new DefaultMutableTreeNode (word);
+        DefaultMutableTreeNode wordNode = new DefaultMutableTreeNode (String.format("<html><b>%s</b></html>", word));
         for (WordRelation wordRelation : contextPostingsList) {
-
             String synonym = wordRelation.getSecondWord();
             double score = wordRelation.getScore();
 
-            DefaultMutableTreeNode subNode =
-                    new DefaultMutableTreeNode(synonym + " " + score);
+            String nodeText = String.format("<html><b>%s</b> %.3f</html>", synonym, score);
+            DefaultMutableTreeNode subNode = new DefaultMutableTreeNode(nodeText);
             wordNode.add(subNode);
         }
         return wordNode;
