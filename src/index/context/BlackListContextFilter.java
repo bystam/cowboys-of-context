@@ -11,7 +11,7 @@ public class BlackListContextFilter implements ContextFilter {
 	private final Set<String> blacklist = new HashSet<String>();
 	
 	public BlackListContextFilter(){
-		blacklist.addAll(Arrays.asList(new String[]{
+		blacklist.addAll(Arrays.asList(
 				"alla",
 				"allt", 
 				"alltså", 
@@ -125,8 +125,7 @@ public class BlackListContextFilter implements ContextFilter {
 				"ref",
 				"gt", // TODO not sure
 				"lt" //TODO not sure
-		}));
-		
+		));
 	}
 	
 	
