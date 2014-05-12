@@ -120,11 +120,15 @@ public class WordIndexer extends AbstractIndexer {
 	 * documents to procces.
 	 */
 	public void saveToDisk() {
+        System.out.println("Writing remaining postings lists to file...");
 		//Update info for the last document
 		docMetaData.setDocumentLength(lastDoc, docLength);
 		docMetaData.setDocumentCount(docMetaData.getNumDocuments()+1);
+        int done = 0;
 		for (PostingsList postingsList : index.values()) {
 			savePostingsListToDisk(postingsList);
+            if (done++ % 10000 == 0)
+                System.out.printf("%d writes are done\n", done);
 		}
 		saveDocumentMetaDataToDisk();
 	}

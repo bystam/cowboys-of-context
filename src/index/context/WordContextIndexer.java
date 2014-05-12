@@ -175,7 +175,7 @@ public class WordContextIndexer extends AbstractIndexer implements ContextIndexe
     }
 
     public void saveAllPostingsLists() {
-    	System.out.println("saveAllPostingsLists() c_index.size == " + c_index.size());
+        System.out.println("Writing remaining context postings lists to file...");
         int done = 0;
         for (ContextPostingsList postingsList : c_index.values()) {
             savePostingsListToDisk(postingsList);
