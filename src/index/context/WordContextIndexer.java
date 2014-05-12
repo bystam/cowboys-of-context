@@ -29,6 +29,7 @@ public class WordContextIndexer extends AbstractIndexer implements ContextIndexe
     
     //ContextFilter to determine which words are relevant
     private final ContextFilter context_filter = new CompositeContextFilter(
+            new OneCharacterContextFilter(),
     		new Mean2ContextFilter(0.5, 0.01), 
     		new BlackListContextFilter());
     
