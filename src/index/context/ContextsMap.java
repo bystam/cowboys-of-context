@@ -7,13 +7,10 @@ import java.util.Set;
 /**
  * Basically a wrapper for a Map<String, List<WordRelation>> to make context
  * less super-verbose.
- *
  */
 public class ContextsMap {
 
     private final Map<String, ContextPostingsList> context = new HashMap<>();
-
-    private double mean = 0;
 
     public void putContextScoresForWord (String word, ContextPostingsList wordRelations) {
         context.put(word, wordRelations);
@@ -26,14 +23,18 @@ public class ContextsMap {
     public Set<String> getOriginalWords () {
         return context.keySet();
     }
-    
-    public void clear(){
-    	context.clear();
-    }
-    
-    public void sortContexts(){
+
+    public void sortContexts() {
     	for(ContextPostingsList postingsList : context.values()){
     		postingsList.sort();
     	}
+    }
+
+    public static ContextsMap newStrippedContextsMap (ContextsMap original) {
+        ContextsMap stripped = new ContextsMap();
+        for (String word : original.getOriginalWords())
+            stripped.putContextScoresForWord(word, original.getContextScoresForWord(word).strip());
+
+        return stripped;
     }
 }

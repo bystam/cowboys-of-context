@@ -9,7 +9,6 @@ import search.Query;
 import javax.swing.*;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
-import java.awt.*;
 
 /**
  * A UI element that can display contexts as a tree, where
@@ -17,7 +16,6 @@ import java.awt.*;
  * with a score.
  */
 public class ContextTree extends JTree {
-    private static final int DISPLAYED_RELATED_WORD_AMOUNT = 5;
 
     private static final DefaultMutableTreeNode ROOT =
             new DefaultMutableTreeNode("ContextsMap");
@@ -45,10 +43,7 @@ public class ContextTree extends JTree {
 
     private DefaultMutableTreeNode nodeWithContext(String word, ContextPostingsList contextPostingsList) {
         DefaultMutableTreeNode wordNode = new DefaultMutableTreeNode (word);
-        int childAmount = 0;
         for (WordRelation wordRelation : contextPostingsList) {
-            if (childAmount++ == DISPLAYED_RELATED_WORD_AMOUNT)
-                break;
 
             String synonym = wordRelation.getSecondWord();
             double score = wordRelation.getScore();

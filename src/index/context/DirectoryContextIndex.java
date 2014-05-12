@@ -58,6 +58,8 @@ public class DirectoryContextIndex implements ContextIndex {
             ContextPostingsList pl = getContextForWord(word);
             if(pl != null){
                 map.putContextScoresForWord(word, pl);
+            } else {
+                map.putContextScoresForWord(word, ContextPostingsList.EMPTY);
             }
         }
         return map;
