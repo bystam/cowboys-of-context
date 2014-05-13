@@ -30,10 +30,10 @@ public class ContextsMap {
     	}
     }
 
-    public static ContextsMap newStrippedContextsMap (ContextsMap original) {
+    public static ContextsMap newStrippedAndNormalizedContextsMap(ContextsMap original) {
         ContextsMap stripped = new ContextsMap();
         for (String word : original.getOriginalWords())
-            stripped.putContextScoresForWord(word, original.getContextScoresForWord(word).strip());
+            stripped.putContextScoresForWord(word, original.getContextScoresForWord(word).strip().normalize());
 
         return stripped;
     }

@@ -50,12 +50,15 @@ public class ContextPostingsList implements Serializable, Iterable<WordRelation>
     	return originalWord + " -> " + entries;
     }
 
-    public void normalizeScores () {
+    public ContextPostingsList normalize() {
+        ContextPostingsList normalized = new ContextPostingsList(this.originalWord);
         final double scoreSum = entries.values()
                 .stream()
                 .mapToDouble(WordRelation::getScore)
                 .sum();
-        entries.values().forEach((wr) -> wr.setScore(wr.getScore() / scoreSum));
+
+        entries.values().forEach((wr) -> normalized.addEntry(wr.getSecondWord(), wr.getScore() / scoreSum));
+        return normalized;
     }
 
     /**

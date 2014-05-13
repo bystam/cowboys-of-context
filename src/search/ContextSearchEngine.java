@@ -25,7 +25,7 @@ public class ContextSearchEngine extends RankedRetrievalSearchEngine {
     public SearchResults search(Query query) {
         query = new Query(query);
         ContextsMap contexts = contextIndex.getContextsForWords(query.getTerms());
-        contexts = ContextsMap.newStrippedContextsMap(contexts);
+        contexts = ContextsMap.newStrippedAndNormalizedContextsMap(contexts);
         expandQueryWithContext (query, contexts);
         System.out.println(query); //TODO
         SearchResults simpleResults = super.search(query);
@@ -33,9 +33,8 @@ public class ContextSearchEngine extends RankedRetrievalSearchEngine {
     }
 
     private void expandQueryWithContext(Query query, ContextsMap contextsMap) {
-    	for(String originalTerm : contextsMap.getOriginalWords()){
+        for (String originalTerm : contextsMap.getOriginalWords()) {
             ContextPostingsList contextPostingsList = contextsMap.getContextScoresForWord(originalTerm);
-            contextPostingsList.normalizeScores();
             for(WordRelation relation : contextPostingsList){
     			query.addOrIncrementTermWeight(relation.getSecondWord(), relation.getScore());
     		}
