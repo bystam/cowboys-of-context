@@ -1,23 +1,16 @@
 package search;
 
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
-import java.util.Set;
-
 import common.Util;
+
+import java.util.*;
+import java.util.Map.Entry;
 
 
 public class Query implements Iterable<Entry<String,Double>> {
 	
 	public static final double DEFAULT_WEIGHT = 1;
 
-	private final Map<String, Double> weightedTerms = new HashMap<>();
+	private final Map<String, Double> weightedTerms = new LinkedHashMap<>();
 
     public Query (Query original) {
         this.weightedTerms.putAll(original.weightedTerms);

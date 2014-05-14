@@ -88,7 +88,8 @@ public class SearchWindowController {
         resultsArea.revalidate();
         resultsArea.repaint();
 
-        contextTree.displayContextForWords(query, searchResults.getContextsMap());
+        if (searchResults.hasContextsMap())
+            contextTree.displayContextForWords(query, searchResults.getContextsMap());
     }
 
     private String nameToWikiLink (String name) {
